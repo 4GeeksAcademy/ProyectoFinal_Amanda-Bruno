@@ -1,8 +1,7 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Home.css'; 
+import '../../styles/home.css'; 
 
-const Jumbotron = () => {
+const Home = () => {
   return (
     <div className="container mt-5">
       <div className="jumbotron">
@@ -20,4 +19,4 @@ const Jumbotron = () => {
   );
 };
 
-export default Jumbotron;
+export default Home;
