@@ -1,15 +1,18 @@
 body {
     background-color: #d8d1c8;
   }
-  
+  .jumbotron-imagen {
+    width: 85%;
+
+  }
+
   .jumbotron {
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR65SbFlMS0r-7ccbVE7ihXwXRlyqoaPoUBrw&s'); 
-    background-size: cover;
-    background-repeat: no-repeat;
     color: rgb(247, 219, 181);
     font-family: Arial, Helvetica, sans-serif;
     padding: 3rem;
     border-radius: 3px;
+    max-height: 20%;
+    overflow: hidden;
   }
   
   @media (max-width: 768px) {
