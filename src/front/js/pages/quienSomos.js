@@ -1,4 +1,7 @@
 import React from 'react';
+import amigos from "../../img/amigos.jpeg";
+import buenCafe from "../../img/buenCafe.webp";
+import plantaCafe from "../../img/plantaCafe.jpg";
 
 function QuienSomos() {
     return (
@@ -6,7 +9,7 @@ function QuienSomos() {
             <div className="container">
                 <div className="row g-0">
                     <div className="col-md-6 image-container">
-                        <img src="https://cafeselcriollo.com/wp-content/uploads/2022/01/beneficios-del-cafe-en-grano_.jpg" alt="Amigos" />
+                        <img src={amigos} alt="Amigos" />
                     </div>
                     <div className="col-md-6 text-container">
                         <h2>Cómo empezó todo</h2>
@@ -22,7 +25,7 @@ function QuienSomos() {
                         <p>La visión de esos amigos era hacer que el buen café fuera accesible para todos. Comenzaron colaborando con productores en las fincas para asegurar la calidad de cada grano. Se enfocan en cada etapa del proceso, desde la cata hasta el tueste, seleccionando solo los granos excepcionales y priorizando la calidad sobre la cantidad. Creen que el café de especialidad no es un lujo, sino una alternativa al café comercial, y están comprometidos a ofrecer una experiencia de calidad para todos, sin importar el paladar.</p>
                     </div>
                     <div className="col-md-6 image-container">
-                        <img src="https://cafeselcriollo.com/wp-content/uploads/2022/01/beneficios-del-cafe-en-grano_.jpg" alt="Buen Café" />
+                        <img src={buenCafe} alt="Buen Café" />
                     </div>
                 </div>
             </div>
@@ -30,7 +33,7 @@ function QuienSomos() {
             <div className="container">
                 <div className="row g-0">
                     <div className="col-md-6 image-container">
-                        <img src="https://cafeselcriollo.com/wp-content/uploads/2022/01/beneficios-del-cafe-en-grano_.jpg" alt="cafe" />
+                        <img src={plantaCafe} alt="planta del cafe" />
                     </div>
                     <div className="col-md-6 text-container">
                         <h2>Café de especialidad, sostenible para los productores y el medio ambiente</h2>

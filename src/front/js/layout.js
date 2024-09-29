@@ -5,7 +5,7 @@ import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
-import { QuienSomos } from "./pages/quienSomos"
+import  QuienSomos  from "./pages/quienSomos"
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
