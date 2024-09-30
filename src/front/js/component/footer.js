@@ -40,8 +40,8 @@ const Footer = () => {
           <h4>Métodos de Pago</h4>
           <div className="payment-icons">
             <img src={visa} alt="Visa" />
-            <img src={applepay} alt="Apple Pay" />
             <img src={mastercard} alt="Mastercard" />
+            <img src={applepay} alt="Apple Pay" />
           </div>
         </div>
       </div>
