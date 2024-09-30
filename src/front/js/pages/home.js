@@ -4,7 +4,7 @@ import jumbotron from "../../img/jumbotron.jpeg";
 
 const Home = () => {
   return (
-    <div className="container mt-5">
+    <div className="container mt-3">
       <div className="jumbotron position-relative">
       <img className='position-absolute jumbotron-imagen' src={jumbotron} />
         <div className="todo position-relative">
