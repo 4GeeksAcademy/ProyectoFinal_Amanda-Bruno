@@ -10,11 +10,11 @@ carrito_producto = db.Table('carrito_producto',
 )
 
 class Usuario(db.Model):
-    __tablename__ = 'usuarios'
+    __tablename__ = 'usuario'
 
-    usuario_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    password = db.Column(db.String(500), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     es_admin = db.Column(db.Boolean(), unique=False, nullable=False)
 
@@ -57,7 +57,7 @@ class Producto(db.Model):
 
     def serialize(self):
         return {
-            "id": self.id,
+            "id": self.producto_id,
             "nombre": self.nombre,
             "descripcion": self.descripcion,
             "precio": self.precio,
@@ -73,12 +73,11 @@ class CarritoDeCompra(db.Model):
     __tablename__ = 'carritos'
     
     carrito_id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     producto_id = db.Column(db.Integer, db.ForeignKey('productos.producto_id'), nullable=False)
     cantidad = db.Column(db.Integer, nullable=False)
 
     productos = db.relationship('Producto', secondary=carrito_producto, backref=db.backref('carritos', lazy=True))
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
 
     def __repr__(self):
         return f'<CarritoDeCompra {self.id}>'

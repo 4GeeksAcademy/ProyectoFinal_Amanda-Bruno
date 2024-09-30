@@ -50,10 +50,8 @@ def create_usuario():
     return jsonify({"mensaje": "Usuario creado con exito"}), 201
 
 # GET Usuario
-@api.route('/usuario?email=<email>', methods=['GET'])
-def get_usuario_by_email():
-    email = request.args.get('email')
-    
+@api.route('/usuario/<email>', methods=['GET'])
+def get_usuario_by_email(email):
     if not email:
         return jsonify({"error": "No se ha encontrado el email"}), 400
 
@@ -79,21 +77,21 @@ def init_productos():
     # Agregar productos a la base de datos
     for producto in productos:
         new_producto = Producto(
-            id=producto['id'],
-            nombre=producto['name'],
-            descripcion=producto['description'],
-            precio=producto['price'],
+            producto_id=producto['producto_id'],
+            nombre=producto['nombre'],
+            descripcion=producto['descripcion'],
+            precio=producto['precio'],
             region=producto['region'],
-            peso=producto['weight'],
-            perfil_sabor=producto['flavor_profile'],
-            opcion_molienda=producto['grind_option'],
-            nivel_tostado=producto['roast_level'],
-            imagen_url=producto['image_url']
+            peso=producto['peso'],
+            perfil_sabor=producto['perfil_sabor'],
+            opcion_molido=producto['opcion_molido'],
+            nivel_tostado=producto['nivel_tostado'],
+            imagen_url=producto['imagen_url']
         )
         db.session.add(new_producto)
 
     db.session.commit()
-    return jsonify({"mensaje": "Productos inicializados con exito"}), 201
+    return jsonify({"mensaje": "Productos cargados con exito"}), 201
 
 # GET Productos (todos)
 @api.route('/productos', methods=['GET'])
@@ -108,7 +106,7 @@ def get_productos():
 # GET Producto por ID
 @api.route('/productos/<int:producto_id>', methods=['GET'])
 def get_producto_by_id(producto_id):
-    producto = Producto.query.filter_by(id=producto_id).first()
+    producto = Producto.query.filter_by(producto_id=producto_id).first()
     
     if not producto:
         return abort(404, description=f"Producto con ID {producto_id} no encontrado")
