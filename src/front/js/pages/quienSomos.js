@@ -2,6 +2,7 @@ import React from 'react';
 import amigos from "../../img/amigos.jpeg";
 import buenCafe from "../../img/buenCafe.webp";
 import plantaCafe from "../../img/plantaCafe.jpg";
+import '../../styles/home.css'; 
 
 function QuienSomos() {
     return (
@@ -13,7 +14,7 @@ function QuienSomos() {
                     </div>
                     <div className="col-md-6 text-container">
                         <h2>Cómo empezó todo</h2>
-                        <p>En 2024, amigos amantes del café decidieron fundar una empresa dedicada a ofrecer café de calidad para llevar. Inspirados por la filosofía de "menos es más", se enfocaron en perfeccionar cada aspecto del proceso, desde la cosecha hasta la taza. Cada uno aportaba su experiencia en cata, tueste y mejora de la experiencia del café. Para ellos, beber café es un ritual que aporta calma y felicidad, y su objetivo es compartir esa transformación diaria con la mayor cantidad de personas posible, tanto en sus cafeterías como en los hogares de sus clientes.</p>
+                        <p>En 2024, unos amigos amantes del café decidieron fundar una empresa dedicada a ofrecer café de calidad para llevar. Inspirados por la filosofía de "menos es más", se enfocaron en perfeccionar cada aspecto del proceso, desde la cosecha hasta la taza. Cada uno aportaba su experiencia en cata, tueste y mejora de la experiencia del café. Para ellos, beber café es un ritual que aporta calma y felicidad, y su objetivo es compartir esa transformación diaria con la mayor cantidad de personas posible, tanto en sus cafeterías como en los hogares de sus clientes.</p>
                     </div>
                 </div>
             </div>
