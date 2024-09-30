@@ -3,9 +3,9 @@ from sqlalchemy.dialects.postgresql import JSON
 
 db = SQLAlchemy()
 
-carrito = db.Table('carritos',
-    db.Column('carrito_id', db.Integer, db.ForeignKey('carrito.id'), primary_key=True),
-    db.Column('producto_id', db.Integer, db.ForeignKey('producto.id'), primary_key=True),
+carrito_producto = db.Table('carrito_producto',
+    db.Column('carrito_id', db.Integer, db.ForeignKey('carritos.carrito_id'), primary_key=True),
+    db.Column('producto_id', db.Integer, db.ForeignKey('productos.producto_id'), primary_key=True),
     db.Column('cantidad', db.Integer, nullable=False, default=1)
 )
 
@@ -49,8 +49,8 @@ class Producto(db.Model):
     opcion_molido = db.Column(db.JSON, nullable=False)    # Array o JSON
     imagen_url = db.Column(db.String(255), nullable=False)
 
-    carrito_de_compra = db.relationship('CarritoDeCompra', secondary=carrito, lazy='subquery',
-        backref=db.backref('productos', lazy=True))
+    carrito_de_compra = db.relationship('CarritoDeCompra', secondary=carrito_producto, lazy='subquery',
+        backref=db.backref('Producto', lazy=True))
 
     def __repr__(self):
         return f'<Producto {self.id}>'
@@ -73,12 +73,12 @@ class CarritoDeCompra(db.Model):
     __tablename__ = 'carritos'
     
     carrito_id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
-    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
+    producto_id = db.Column(db.Integer, db.ForeignKey('productos.producto_id'), nullable=False)
     cantidad = db.Column(db.Integer, nullable=False)
 
-    productos = db.relationship('Producto', secondary=carrito, backref=db.backref('carritos', lazy=True))
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    productos = db.relationship('Producto', secondary=carrito_producto, backref=db.backref('carritos', lazy=True))
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
 
     def __repr__(self):
         return f'<CarritoDeCompra {self.id}>'
@@ -88,7 +88,7 @@ class Pedido(db.Model):
     __tablename__ = 'pedidos'
 
     pedido_id = db.Column(db.Integer, primary_key=True)
-    carrito_id = db.Column(db.Integer, db.ForeignKey('carrito.id'), nullable=False)
+    carrito_id = db.Column(db.Integer, db.ForeignKey('carritos.carrito_id'), nullable=False)
 
     fecha_pedido = db.Column(db.DateTime, nullable=False)
     total_facturacion = db.Column(db.Float, nullable=False)
