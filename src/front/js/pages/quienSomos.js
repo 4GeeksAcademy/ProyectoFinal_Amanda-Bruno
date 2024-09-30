@@ -2,7 +2,7 @@ import React from 'react';
 import amigos from "../../img/amigos.jpeg";
 import buenCafe from "../../img/buenCafe.webp";
 import plantaCafe from "../../img/plantaCafe.jpg";
-import '../../styles/home.css'; 
+import '../../styles/quienSomos.css'; 
 
 function QuienSomos() {
     return (

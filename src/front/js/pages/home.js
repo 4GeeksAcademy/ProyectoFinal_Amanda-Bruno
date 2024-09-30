@@ -16,9 +16,9 @@ export const Home = () => {
 				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
 			</div>
 			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
+				Quien Somos:{" "}
+				<a href="/quienSomos">
+					Aqui
 				</a>
 			</p>
 		</div>
