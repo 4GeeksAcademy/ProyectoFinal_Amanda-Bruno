@@ -1,14 +1,15 @@
-import React, { useState } from "react"; 
-import '../../styles/navbar.css'; 
+import React, { useState } from "react";
+import '../../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSearch, faUser, faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons';
-import logo1 from "../../img/logo1.png"; 
+import { faBars, faUser, faShoppingCart, faHeart, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import logo1 from "../../img/logo1.png";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false); 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen); 
+        setIsMenuOpen(!isMenuOpen);
     };
 
     return (
@@ -19,13 +20,14 @@ const Navbar = () => {
             <button className="hamburger-menu" id="hamburger-menu" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faBars} />
             </button>
-            <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`} id="navbar-content">
+            <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
 
                 <div className="navbar-right">
-                    <button className="btn search-btn">
-                        <FontAwesomeIcon icon={faSearch} /> Buscar productos
-                    </button>
-
+                    <div className="dropdown">
+                    <Link to="/productos" className="btn productos-btn">
+                        <FontAwesomeIcon icon={faCoffee} /> Productos
+                    </Link>
+                    </div>
                     <div className="dropdown">
                         <button className="btn favorites-btn">
                             <FontAwesomeIcon icon={faHeart} /> Favoritos
@@ -45,9 +47,9 @@ const Navbar = () => {
                     </div>
 
                     <div className="dropdown">
-                    <button className="btn login-btn">
-                        <FontAwesomeIcon icon={faUser} /> Login
-                    </button>
+                        <button className="btn login-btn">
+                            <FontAwesomeIcon icon={faUser} /> Login
+                        </button>
                     </div>
 
                 </div>

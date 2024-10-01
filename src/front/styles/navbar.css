@@ -25,11 +25,6 @@ body {
     color: #a19359;
 }
 
-
-.navbar-content {
-display: flex;
-}
-
 .navbar-content.active {
     display: flex; 
     flex-direction: column; 
@@ -50,40 +45,6 @@ button {
 
 .login-btn {
     color: #556967;
-}
-
-/* Estilo específico para el botón de búsqueda */
-.search-btn {
-    border: 1px solid #556967; 
-    border-radius: 10px; 
-    color: #a19359;
-}
-
-/* Eliminando el subrayado para el botón de búsqueda */
-.search-btn::after {
-    display: none; 
-}
-
-/* Aplicando el subrayado para los demás botones */
-.btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: #a19359;
-    transition: width 0.3s ease, left 0.3s ease;
-}
-
-/* barra buscar produto*/
-.btn:hover {
-    color: #556967; 
-} 
-
-.btn:hover::after {
-    width: 100%;
-    left: 0;
 }
 
 .logo {
@@ -116,7 +77,7 @@ button {
     transition: color 0.3s;
 }
 
-/*rico debaixo fav e carrinho */
+/*raya abajo de fav y carrito */
 .dropdown .btn::after {
     content: '';
     position: absolute;
@@ -140,6 +101,7 @@ button {
 @media (max-width: 768px) {
     .hamburger-menu {
         display: block;
+        margin: 10px;
     }
 
     .navbar-content {
@@ -152,7 +114,8 @@ button {
 
     .navbar-content.active {
         display: flex;
-        width: 100%;
+        position:absolute;
+        right: 0;
         background-color: transparent;
     }
 
