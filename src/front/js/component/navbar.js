@@ -4,15 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faShoppingCart, faHeart, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import logo1 from "../../img/logo1.png";
 import { Link } from 'react-router-dom';
+import LoginNavbar from "./loginNavbar";
 
 const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // modal del menu hamburguesa
+    const [showLoginModal, setShowLoginModal] = useState(false); // modal de login
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleLoginClick = () => {
+        setShowLoginModal(true); 
+    };
+
+    const handleCloseModal = () => {
+        setShowLoginModal(false); 
+    };
+
     return (
+        <div> 
         <nav className="navbar">
             <div className="navbar-left">
                 <img src={logo1} alt="Logo" className="logo" />
@@ -24,9 +35,9 @@ const Navbar = () => {
 
                 <div className="navbar-right">
                     <div className="dropdown">
-                    <Link to="/productos" className="btn productos-btn">
-                        <FontAwesomeIcon icon={faCoffee} /> Productos
-                    </Link>
+                        <Link to="/productos" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faCoffee} /> Productos
+                        </Link>
                     </div>
                     <div className="dropdown">
                         <button className="btn favorites-btn">
@@ -47,14 +58,15 @@ const Navbar = () => {
                     </div>
 
                     <div className="dropdown">
-                        <button className="btn login-btn">
+                        <button className="btn login-btn" onClick={handleLoginClick}>
                             <FontAwesomeIcon icon={faUser} /> Login
                         </button>
                     </div>
-
                 </div>
             </div>
         </nav>
+        {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} />} 
+        </div>
     );
 };
 
