@@ -26,7 +26,9 @@ const Navbar = () => {
         <div> 
         <nav className="navbar">
             <div className="navbar-left">
-                <img src={logoNav} alt="Logo" className="logo" />
+            <Link to="/">
+                    <img src={logoNav} alt="Logo" className="logo" />
+                </Link>
             </div>
             <button className="hamburger-menu" id="hamburger-menu" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faBars} />
@@ -39,6 +41,7 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faCoffee} /> Productos
                         </Link>
                     </div>
+
                     <div className="dropdown">
                         <button className="btn favorites-btn">
                             <FontAwesomeIcon icon={faHeart} /> Favoritos
@@ -57,14 +60,22 @@ const Navbar = () => {
                         </div>
                     </div>
 
+                     <div className="dropdown">
+                        <Link to="/registrar" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faUser} /> Registrar
+                        </Link>
+                    </div>
+
                     <div className="dropdown">
                         <button className="btn login-btn" onClick={handleLoginClick}>
                             <FontAwesomeIcon icon={faUser} /> Login
                         </button>
                     </div>
+
                 </div>
             </div>
         </nav>
+
         {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} />} 
         </div>
     );

@@ -1,6 +1,5 @@
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .navbar {
@@ -40,7 +39,6 @@ button {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    margin-left: 20px;
 }
 
 .login-btn {

@@ -27,10 +27,6 @@ const LoginNavbar = ({ handleCloseModal }) => {
                     </div>
 
                     <div className="modal-footer">
-                        <a href="/signup" className="btn btn-custom" style={{ color: '#4B2E0F' }}>
-                            Crear usuario
-                        </a>
-
                         <button type="button" className="btn btn-custom " style={{ color: '#4B2E0F' }}>
                             Iniciar sesión
                         </button>

@@ -3,10 +3,11 @@
 }
 
 .modal-content {
+    
     background-color: #556967;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #d4b89a;
+    border: 1px solid #eaccacba;
     width: 80%;
     max-width: 400px;
     border-radius: 10px;
