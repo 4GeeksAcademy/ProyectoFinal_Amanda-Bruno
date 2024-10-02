@@ -1,10 +1,11 @@
 import React from 'react';
 import '../../styles/home.css'; 
 import jumbotron from "../../img/jumbotron.jpeg";
+import CardsProducts from './cardsProducts';
 
 const Home = () => {
   return (
-    
+    <div>
     <div className="mt-3">
       <div className="jumbotron position-relative">
       <img className='position-absolute jumbotron-imagen' src={jumbotron} />
@@ -18,6 +19,8 @@ const Home = () => {
         </div>
       </div>
     </div>
+          <CardsProducts />
+          </div>
   );
 };
 
