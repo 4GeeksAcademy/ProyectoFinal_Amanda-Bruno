@@ -1,13 +1,16 @@
+h2 {
+color: #556967;
+}
 
 .container {
     max-width: 1200px;
     margin: 30px auto;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.302);
     border: 2px solid #556967; 
     border-radius: 10px;
     padding: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #556967;
+    color: #a19359;
 }
 
 .image-container img {

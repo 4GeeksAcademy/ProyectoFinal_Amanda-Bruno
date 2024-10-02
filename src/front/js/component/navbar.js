@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUser, faShoppingCart, faHeart, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser, faShoppingCart, faHeart, faCoffee, faAddressCard, faShop } from '@fortawesome/free-solid-svg-icons';
 import logoNav from "../../img/logoNav.png";
 import { Link } from 'react-router-dom';
 import LoginNavbar from "./loginNavbar";
@@ -36,6 +36,12 @@ const Navbar = () => {
             <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
 
                 <div className="navbar-right">
+                <div className="dropdown">
+                        <Link to="/quienSomos" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faShop} /> Nuestro café
+                        </Link>
+                    </div>
+
                     <div className="dropdown">
                         <Link to="/productos" className="btn productos-btn">
                             <FontAwesomeIcon icon={faCoffee} /> Productos
@@ -62,7 +68,7 @@ const Navbar = () => {
 
                      <div className="dropdown">
                         <Link to="/registrar" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faUser} /> Registrar
+                            <FontAwesomeIcon icon={faAddressCard} /> Registrar
                         </Link>
                     </div>
 

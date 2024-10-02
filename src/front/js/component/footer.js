@@ -16,13 +16,12 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Enlaces</h4>
           <ul>
-            <li><a href="#">Sobre Nosotros</a></li>
-            <li><a href="#">Home</a></li>
+            <li><a href="/quienSomos">Sobre Nosotros</a></li>
             <li><a href="#">Pedidos</a></li>
-            <li><a href="#">Términos y Condiciones</a></li>
-            <li><a href="#">Privacidad</a></li>
             <li><a href="#">Envíos</a></li>
             <li><a href="#">Devoluciones</a></li>
+            <li><a href="#">Términos y Condiciones</a></li>
+            <li><a href="#">Privacidad</a></li>
           </ul>
         </div>
         <div className="footer-section social-section">
