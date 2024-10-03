@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 import LoginNavbar from "./loginNavbar";
 
 const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // modal del menu hamburguesa
-    const [showLoginModal, setShowLoginModal] = useState(false); // modal de login
+    const [isMenuOpen, setIsMenuOpen] = useState(false); 
+    const [showLoginModal, setShowLoginModal] = useState(false); 
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -52,9 +52,9 @@ const Navbar = () => {
                     </div>
 
                     <div className="dropdown">
-                        <button className="btn cart-btn">
+                        <Link to="/carritoCompra" className="btn cart-btn">
                             <FontAwesomeIcon icon={faShoppingCart} /> Carrito
-                        </button>
+                       </Link>
                         <div className="dropdown-content">
                             <p>Carrito vacío</p>
                         </div>
