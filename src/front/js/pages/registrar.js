@@ -17,9 +17,32 @@ const Registrar = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aquí hay que hacer una llamada a la API para registrar el usuario
-        console.log("Formulario enviado:", form);
+    
+        fetch('http://localhost:3000/api/registro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.mensaje) {
+                console.log('Usuário registrado com éxito:', data.mensaje);
+                alert('Registro exitoso');
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+            alert('Error al registrar: ' + error.message);
+        });
     };
+      
 
     return (
         <div className="registrar-container">
