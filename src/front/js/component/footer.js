@@ -16,21 +16,19 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Enlaces</h4>
           <ul>
-            <li><a href="#">Sobre Nosotros</a></li>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Pedidos</a></li>
-            <li><a href="#">Términos y Condiciones</a></li>
-            <li><a href="#">Privacidad</a></li>
-            <li><a href="#">Envíos</a></li>
-            <li><a href="#">Devoluciones</a></li>
+            <li><a href="/quienSomos">Sobre Nosotros</a></li>
+            <li><a href="/terminosCondiciones">Términos y Condiciones</a></li>
+            <li><a href="/privacidad">Privacidad</a></li>
+            <li><a href="/envios">Envíos</a></li>
+            <li><a href="/devoluciones">Devoluciones</a></li>
           </ul>
         </div>
         <div className="footer-section social-section">
           <h2>Síguenos</h2>
           <div className="social-icons">
-            <a href="#"><img src={x} alt="X" /></a>
-            <a href="#"><img src={instagram} alt="Instagram" /></a>
-            <a href="#"><img src={youtube} alt="YouTube" /></a>
+            <a href="https://twitter.com/_the_coffee"><img src={x} alt="X" /></a>
+            <a href="https://www.instagram.com/coffee.abia?igsh=c25ocW1jZ2oxNzVj"><img src={instagram} alt="Instagram" /></a>
+            <a href="https://www.youtube.com/watch?v=TEH_kNy5Ebk"><img src={youtube} alt="YouTube" /></a>
           </div>
           <div className="footer-logo">
             <img src={logo} alt="Logo de la empresa" />
