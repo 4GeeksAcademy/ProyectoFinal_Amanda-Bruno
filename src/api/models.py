@@ -52,7 +52,7 @@ class Producto(db.Model):
     imagen_url = db.Column(db.String(255), nullable=False)
 
     carrito_de_compra = db.relationship('CarritoDeCompra', secondary=carrito_producto, lazy='subquery',
-        backref=db.backref('Producto', lazy=True))
+        backref=db.backref('productos_en_carrito', lazy=True))
 
     def __repr__(self):
         return f'<Producto {self.producto_id}>'
@@ -75,11 +75,9 @@ class CarritoDeCompra(db.Model):
     __tablename__ = 'carritos'
     
     carrito_id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False, unique=True)
 
-    cantidad = db.Column(db.Integer, nullable=False)
-
-    productos = db.relationship('Producto', secondary=carrito_producto, backref=db.backref('carritos', lazy=True))
+    productos = db.relationship('Producto', secondary=carrito_producto, backref=db.backref('carritos_contenido', lazy=True))
 
     def __repr__(self):
         return f'<CarritoDeCompra {self.carrito_id}>'
