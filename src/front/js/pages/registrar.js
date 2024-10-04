@@ -17,8 +17,8 @@ const Registrar = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-        fetch('http://localhost:3000/api/registro', {
+    console.log(form)
+        fetch('https://potential-winner-pj7vx5qp4wvrcx49-3001.app.github.dev/api/registro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

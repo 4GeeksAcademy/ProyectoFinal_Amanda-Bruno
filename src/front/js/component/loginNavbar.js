@@ -9,7 +9,7 @@ const LoginNavbar = ({ handleCloseModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:5000/api/login', {
+        fetch('https://potential-winner-pj7vx5qp4wvrcx49-3001.app.github.dev/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
