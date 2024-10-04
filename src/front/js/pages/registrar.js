@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../styles/registrar.css";
+import { Context } from '../store/appContext'
 
 const Registrar = () => {
     const [form, setForm] = useState({
@@ -7,6 +8,8 @@ const Registrar = () => {
         email: "",
         password: ""
     });
+
+    const {store, actions} = useContext(Context)
 
     const handleChange = (e) => {
         setForm({
@@ -17,33 +20,12 @@ const Registrar = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    console.log(form)
-        fetch('https://potential-winner-pj7vx5qp4wvrcx49-3001.app.github.dev/api/registro', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(form)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw new Error(err.error); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.mensaje) {
-                console.log('Usuário registrado com éxito:', data.mensaje);
-                alert('Registro exitoso');
-            }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-            alert('Error al registrar: ' + error.message);
-        });
-    };
-      
+        console.log(form);
+    
+        actions.registrar(form);
 
+    };    
+      
     return (
         <div className="registrar-container">
             <h1><strong> Regístrate </strong></h1>
