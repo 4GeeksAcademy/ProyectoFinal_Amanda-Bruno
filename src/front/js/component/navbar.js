@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import '../../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faShoppingCart, faHeart, faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,16 @@ import LoginNavbar from "./loginNavbar";
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const [showLoginModal, setShowLoginModal] = useState(false); 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        // Verifica si hay un token al montar el componente
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -22,61 +33,86 @@ const Navbar = () => {
         setShowLoginModal(false); 
     };
 
+    const handleLogout = () => {
+        sessionStorage.removeItem('token');
+        setIsAuthenticated(false);
+        navigate('/');
+    };
+
+    const handleAccountClick = () => {
+        navigate('/usuarioView');
+    };
+
     return (
         <div> 
-        <nav className="navbar">
-            <div className="navbar-left">
-            <Link to="/">
-                    <img src={logoNav} alt="Logo" className="logo" />
-                </Link>
-            </div>
-            <button className="hamburger-menu" id="hamburger-menu" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faBars} />
-            </button>
-            <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
-
-                <div className="navbar-right">
-                    <div className="dropdown">
-                        <Link to="/productos" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faCoffee} /> Productos
-                        </Link>
-                    </div>
-
-                    <div className="dropdown">
-                        <button className="btn favorites-btn">
-                            <FontAwesomeIcon icon={faHeart} /> Favoritos
-                        </button>
-                        <div className="dropdown-content">
-                            <p>Sin productos en favoritos</p>
-                        </div>
-                    </div>
-
-                    <div className="dropdown">
-                        <Link to="/carritoCompra" className="btn cart-btn">
-                            <FontAwesomeIcon icon={faShoppingCart} /> Carrito
-                       </Link>
-                        <div className="dropdown-content">
-                            <p>Carrito vacío</p>
-                        </div>
-                    </div>
-
-                     <div className="dropdown">
-                        <Link to="/registrar" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faUser} /> Registrar
-                        </Link>
-                    </div>
-
-                    <div className="dropdown">
-                        <button className="btn login-btn" onClick={handleLoginClick}>
-                            <FontAwesomeIcon icon={faUser} /> Login
-                        </button>
-                    </div>
-
+            <nav className="navbar">
+                <div className="navbar-left">
+                    <Link to="/">
+                        <img src={logoNav} alt="Logo" className="logo" />
+                    </Link>
                 </div>
-            </div>
-        </nav>
+                <button className="hamburger-menu" id="hamburger-menu" onClick={toggleMenu}>
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
+                <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
 
-        {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} />} 
+                    <div className="navbar-right">
+                        <div className="dropdown">
+                            <Link to="/productos" className="btn productos-btn">
+                                <FontAwesomeIcon icon={faCoffee} /> Productos
+                            </Link>
+                        </div>
+
+                        <div className="dropdown">
+                            <button className="btn favorites-btn">
+                                <FontAwesomeIcon icon={faHeart} /> Favoritos
+                            </button>
+                            <div className="dropdown-content">
+                                <p>Sin productos en favoritos</p>
+                            </div>
+                        </div>
+
+                        <div className="dropdown">
+                            <Link to="/carritoCompra" className="btn cart-btn">
+                                <FontAwesomeIcon icon={faShoppingCart} /> Carrito
+                            </Link>
+                            <div className="dropdown-content">
+                                <p>Carrito vacío</p>
+                            </div>
+                        </div>
+
+                        <div className="dropdown">
+                            <Link to="/registrar" className="btn productos-btn">
+                                <FontAwesomeIcon icon={faUser} /> Registrar
+                            </Link>
+                        </div>
+
+                        <div className="dropdown">
+                            {isAuthenticated ? (
+                                <div className="dropdown">
+                                    <button className="btn login-btn">
+                                        <FontAwesomeIcon icon={faUser} /> Mi Cuenta
+                                    </button>
+                                    <div className="dropdown-content">
+                                        <button onClick={handleAccountClick} className="btn">
+                                            Editar Usuario
+                                        </button>
+                                        <button onClick={handleLogout} className="btn">
+                                            Cerrar Sesión
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <button className="btn login-btn" onClick={handleLoginClick}>
+                                    <FontAwesomeIcon icon={faUser} /> Mi Cuenta
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} />} 
         </div>
     );
 };

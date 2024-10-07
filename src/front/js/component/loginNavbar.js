@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../styles/loginNavbar.css';
 
-const LoginNavbar = ({ handleCloseModal }) => {
+const LoginNavbar = ({ handleCloseModal, onLoginSuccess }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -9,7 +9,7 @@ const LoginNavbar = ({ handleCloseModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('https://potential-winner-pj7vx5qp4wvrcx49-3001.app.github.dev/api/login', {
+        fetch(`${process.env.BACKEND_URL}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -23,10 +23,11 @@ const LoginNavbar = ({ handleCloseModal }) => {
         .then(data => {
             if (data.token) {
                 sessionStorage.setItem('token', data.token);
-                console.log("Bienvenido a tu cuenta!", data);
+                console.log("Inicio de sesión exitoso");
+                onLoginSuccess();  
                 handleCloseModal();  
             } else {
-                setError(data.error);
+                setError(data.error || "Error desconocido al iniciar sesión.");
                 console.error('Error al iniciar sesión:', data.error);
             }
         })
@@ -40,7 +41,6 @@ const LoginNavbar = ({ handleCloseModal }) => {
         <div className="modal show d-block">
             <div className="modal-dialog">
                 <div className="modal-content">
-
                     <div className="modal-header">
                         <h5 className="modal-title">ENTRAR EN EL MUNDO ABI&A</h5>
                         <button
@@ -77,7 +77,6 @@ const LoginNavbar = ({ handleCloseModal }) => {
                             </button>
                         </form>
                     </div>
-                    
                 </div>
             </div>
         </div>
