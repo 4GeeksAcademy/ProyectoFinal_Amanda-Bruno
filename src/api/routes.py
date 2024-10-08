@@ -8,8 +8,10 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+import stripe
 
 api = Blueprint('api', __name__)
+stripe.api_key = 'sk_test_51Q2r2N06zQfFcColuDlGYU5ASql5Q9fsnjKX4vzwx8GFlbZTKVCXexfKbvEkqde8LObURT21VGVn4heuu7DM1LLt00oVGSM3Zl'
 
 # Allow CORS requests to this API
 CORS(api)
@@ -112,6 +114,25 @@ def init_productos():
 
     # Agregar productos a la base de datos
     for producto in productos:
+        producto_stripe = stripe.Product.create(
+            name=producto['nombre'],
+            description=producto['descripcion'],
+            images=[producto['imagen_url']],
+            metadata={
+                'region': producto['region'],
+                'peso': str(producto['peso']),
+                'nivel_tostado': str(producto['nivel_tostado']),
+                'perfil_sabor': ', '.join(producto['perfil_sabor']['notas']),
+                'opcion_molido': ', '.join(producto['opcion_molido']['tipos'])
+            }
+        )
+
+        precio_stripe = stripe.Price.create(
+            product=producto_stripe.id,
+            unit_amount=int(producto['precio'] * 100),  
+            currency='eur'
+        )
+
         new_producto = Producto(
             producto_id=producto['producto_id'],
             nombre=producto['nombre'],
@@ -122,7 +143,9 @@ def init_productos():
             perfil_sabor=producto['perfil_sabor'],
             opcion_molido=producto['opcion_molido'],
             nivel_tostado=producto['nivel_tostado'],
-            imagen_url=producto['imagen_url']
+            imagen_url=producto['imagen_url'],
+            precio_stripe_id=precio_stripe.id,
+            producto_stripe_id=producto_stripe.id
         )
         db.session.add(new_producto)
 
@@ -241,6 +264,50 @@ def limpiar_carrito():
 
     return jsonify({"mensaje": "Carrito vacio"}), 200
 
+# POST - Checkout
+@api.route('/checkout', methods=['POST'])
+@jwt_required()
+def checkout():
+    current_user_id = get_jwt_identity()
+    items_en_carrito = request.get_json().get('items', [])
+
+    items = []
+    cantidad_total = 0
+
+    for item in items_en_carrito:
+        producto = Producto.query.filter_by(producto_id=item['producto_id']).first()
+        
+        if producto:
+            items.append({
+                'price': producto.precio_stripe_id,
+                'quantity': item['cantidad'],
+            })           
+    
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card', 'lydia', 'sepa_debit'],
+            line_items=items,
+            mode='payment',
+            success_url=os.getenv("FRONTEND_URL") + '?success=true',
+            cancel_url=os.getenv("FRONTEND_URL") + '?canceled=true',
+        )
+
+# Crear un nuevo Pedido en la base de datos
+        nuevo_pedido = Pedido(
+            carrito_id=items_en_carrito[0]['carrito_id'],  
+            usuario_id=current_user_id,
+            total_facturacion=cantidad_total,
+            stripe_session_id=checkout_session.id  
+        )
+        db.session.add(nuevo_pedido)
+        db.session.commit()
+
+        return jsonify({'id': checkout_session.id}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+        
 
 
 

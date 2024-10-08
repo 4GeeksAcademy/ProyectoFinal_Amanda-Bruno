@@ -25,7 +25,6 @@ class Usuario(db.Model):
     codigo_postal = db.Column(db.String(120), unique=False, nullable=True)
     ciudad = db.Column(db.String(120), unique=False, nullable=True)
     telefono = db.Column(db.String(120), unique=False, nullable=True)
-    
 
     def __repr__(self):
         return f'<Usuario {self.email}>'
@@ -51,6 +50,9 @@ class Producto(db.Model):
     opcion_molido = db.Column(db.JSON, nullable=False)    # Array o JSON
     imagen_url = db.Column(db.String(255), nullable=False)
 
+    precio_stripe_id = db.Column(db.String(50), nullable=False)
+    producto_stripe_id = db.Column(db.String(50), nullable=False)
+
     carrito_de_compra = db.relationship('CarritoDeCompra', secondary=carrito_producto, lazy='subquery',
         backref=db.backref('productos_en_carrito', lazy=True))
 
@@ -68,7 +70,9 @@ class Producto(db.Model):
             "nivel_tostado": self.nivel_tostado,
             "perfil_sabor": self.perfil_sabor,
             "opcion_molido": self.opcion_molido,
-            "imagen_url": self.imagen_url           
+            "imagen_url": self.imagen_url,
+            "precio_stripe_id": self.precio_stripe_id,
+            "producto_stripe_id": self.producto_stripe_id       
         }
 
 class CarritoDeCompra(db.Model):
@@ -88,12 +92,15 @@ class Pedido(db.Model):
 
     pedido_id = db.Column(db.Integer, primary_key=True)
     carrito_id = db.Column(db.Integer, db.ForeignKey('carritos.carrito_id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
     fecha_pedido = db.Column(db.DateTime, nullable=False)
     total_facturacion = db.Column(db.Float, nullable=False)
-  #  modo_de_pago = db.Column(db.String(50), nullable=False)
+    stripe_session_id = db.Column(db.String(255), unique=True)
+  
 
     carrito = db.relationship('CarritoDeCompra', backref=db.backref('pedidos', lazy=True))
+    usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
 
     def __repr__(self):
         return f'<Pedido {self.pedido_id}>'
