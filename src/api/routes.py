@@ -275,7 +275,7 @@ def checkout():
     cantidad_total = 0
 
     for item in items_en_carrito:
-        producto = Producto.query.filter_by(producto_id=item['producto_id']).first()
+        producto = Producto.query.get(item['producto_id'])
         
         if producto:
             items.append({
