@@ -1,0 +1,31 @@
+.texto {
+    text-align: center;
+    font-family: 'DM Sans';
+    color: #556967;
+    padding: 5%; 
+}
+
+h1 {
+    padding-top: 30px;
+    font-size: 2.5rem; 
+}
+
+h5 {
+    text-decoration: underline;
+    font-size: 1.2rem; 
+}
+
+@media (max-width: 768px) {
+    .texto {
+        padding: 10px; 
+    }
+    
+    h1 {
+        font-size: 2rem;
+        padding-top: 20px;
+    }
+    
+    h5 {
+        font-size: 1rem; 
+    }
+}

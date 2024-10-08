@@ -1,0 +1,223 @@
+.carritoCompra {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.carrito-items {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.carrito-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+.item-details h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-details p {
+    margin: 5px 0;
+    color: #777;
+}
+
+.item-controls {
+    display: flex;
+    align-items: center;
+}
+
+.item-controls button {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.item-price p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.add-more {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.order-summary {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: rgba(245, 245, 245, 0.631);
+}
+
+.order-summary h2 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.opciones-envio {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.opcion-envio {
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.opcion-envio.active {
+    background-color: #000;
+    color: white;
+}
+
+.terms {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.terms label {
+    margin-left: 10px;
+}
+
+.pagar-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: black;
+    color: white;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.add-more:hover {
+    background-color: #556967;
+    color: white;
+  }
+
+.pagar-btn:hover {
+    background-color: #556967;
+    color: white;
+  }
+
+@media (max-width: 1024px) {
+    .carritoCompra {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .carrito-items, .order-summary {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .order-summary {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carrito-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-controls {
+        margin-top: 10px;
+    }
+
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary-total {
+        justify-content: space-between;
+    }
+
+    .opciones-envio {
+        flex-direction: column;
+    }
+
+    .opcion-envio {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .carritoCompra {
+        padding: 5px;
+    }
+
+    .carrito-item {
+        padding: 10px;
+    }
+
+    .item-price p {
+        font-size: 16px;
+    }
+
+    .pagar-btn {
+        padding: 10px;
+    }
+
+    .add-more {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .item-controls button {
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .opcion-envio {
+        font-size: 14px;
+    }
+
+    .add-more:hover {
+        background-color: #556967;
+        color: white;
+      }
+    
+    .pagar-btn:hover {
+        background-color: #556967;
+        color: white;
+      }
+    
+}

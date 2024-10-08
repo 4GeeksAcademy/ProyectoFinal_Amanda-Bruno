@@ -1,0 +1,87 @@
+.registrar-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+.registrar-container h1 {
+    text-align: center;
+    color: #556967;
+    font-family: 'DM Sans';
+}
+
+.registrar-container form div {
+    margin-bottom: 15px;
+}
+
+.registrar-container form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #556967;
+}
+
+.registrar-container form input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-color: rgb(75, 46, 15);
+}
+
+.registrar {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background-color: #556967;
+    color:  #eaccac;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 170px;
+    margin-right: 170px;
+}
+
+.registrar:hover {
+    background-color: rgba(75, 46, 15, 0.618);
+}
+
+@media (max-width: 768px) {
+    .registrar-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+    
+    .registrar {
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .registrar-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+    
+    .registrar {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+    .registrar-container h1 {
+        font-size: 1.5em;
+    }
+    
+    .registrar-container form input {
+        padding: 6px;
+    }
+}
+
+@media (max-width: 400px) {
+    .registrar {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 8px;
+    }
+}

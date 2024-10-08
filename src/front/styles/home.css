@@ -1,7 +1,55 @@
-/*
-    home.css: This website contains selectors only used in home.css
+body {
+  background-color: #eaccacba;
+  font-family: DM Sans;
+  }
+  
+  .jumbotron-imagen {
+    width: 100%;
+  }
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+  .jumbotron {
+    color: rgb(247, 219, 181);
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 3px;
+    max-height: 20%;
+    overflow: hidden;
+    position: relative;
+    height: 500px;
+  }
+
+  .m-3 {
+    padding: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 5px;
+    }
+
+    .todo{
+      margin: 0px;
+    }
+
+    .display-4 {
+      font-size: 2rem;
+    }
+  
+    .lead {
+      font-size: 1rem;
+    }
+  }
+  
+  .btn-custom {
+    background-color: #d4b89a;
+    border: none;
+  }
+  
+  .btn-custom:hover {
+    background-color: #c9a88a;
+  }
+
+  .todo {
+    margin: 20px;
+  }
+
+  
