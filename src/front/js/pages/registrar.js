@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../styles/registrar.css";
+import { Context } from '../store/appContext'
 
 const Registrar = () => {
     const [form, setForm] = useState({
@@ -7,6 +8,8 @@ const Registrar = () => {
         email: "",
         password: ""
     });
+
+    const {store, actions} = useContext(Context)
 
     const handleChange = (e) => {
         setForm({
@@ -17,10 +20,12 @@ const Registrar = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aquí hay que hacer una llamada a la API para registrar el usuario
-        console.log("Formulario enviado:", form);
-    };
+        console.log(form);
+    
+        actions.registrar(form);
 
+    };    
+      
     return (
         <div className="registrar-container">
             <h1><strong> Regístrate </strong></h1>
