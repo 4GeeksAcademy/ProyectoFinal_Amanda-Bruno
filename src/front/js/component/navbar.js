@@ -64,15 +64,6 @@ const Navbar = () => {
                         </div>
 
                         <div className="dropdown">
-                            <button className="btn favorites-btn">
-                                <FontAwesomeIcon icon={faHeart} /> Favoritos
-                            </button>
-                            <div className="dropdown-content">
-                                <p>Sin productos en favoritos</p>
-                            </div>
-                        </div>
-
-                        <div className="dropdown">
                             <Link to="/carritoCompra" className="btn cart-btn">
                                 <FontAwesomeIcon icon={faShoppingCart} /> Carrito
                             </Link>

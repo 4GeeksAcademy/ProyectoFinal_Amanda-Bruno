@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import '../../styles/loginNavbar.css';
 
 const LoginNavbar = ({ handleCloseModal, onLoginSuccess }) => {
+    const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -9,32 +11,17 @@ const LoginNavbar = ({ handleCloseModal, onLoginSuccess }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch(`${process.env.BACKEND_URL}/api/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        actions.loginUsuario(
+            email, 
+            password, 
+            () => {
+                onLoginSuccess();
+                handleCloseModal();
             },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.token) {
-                sessionStorage.setItem('token', data.token);
-                console.log("Inicio de sesión exitoso");
-                onLoginSuccess();  
-                handleCloseModal();  
-            } else {
-                setError(data.error || "Error desconocido al iniciar sesión.");
-                console.error('Error al iniciar sesión:', data.error);
+            (errorMessage) => {
+                setError(errorMessage);
             }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-            setError('Email o contraseña incorrecta. Inténtalo de nuevo.');
-        });
+        );
     };
 
     return (

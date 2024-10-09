@@ -192,7 +192,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			  ]
 		},
 		actions: {
-			registrar: (form, navigate) => { 
+            registrar: (form, navigate) => { 
                 fetch(`${process.env.BACKEND_URL}/api/registro`, {
                     method: 'POST',
                     headers: {
@@ -207,12 +207,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return response.json();
                 })
                 .then(data => {
-                    if (data.mensaje) {
-                        console.log('Usuario registrado con éxito:', data.mensaje);
-                        alert('Registro exitoso');
-                        
+                    if (data.token) {
+                        sessionStorage.setItem('token', data.token); 
                         setStore({ usuario: form });
-
+                        alert('Registro exitoso');
                         navigate('/usuarioView'); 
                     }
                 })
@@ -221,8 +219,79 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert('Error al registrar: ' + error.message);
                 });
             },
+
+            loginUsuario: (email, password, onSuccess, onError) => {
+                fetch(`${process.env.BACKEND_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.token) {
+                        sessionStorage.setItem('token', data.token);
+                        console.log("Inicio de sesión exitoso");
+                        if (onSuccess) onSuccess(); 
+                    } else {
+                        console.error('Error al iniciar sesión:', data.error);
+                        if (onError) onError(data.error || "Error desconocido al iniciar sesión.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    if (onError) onError('Error de conexión. Inténtalo de nuevo.');
+                });
+            },
+
             actualizarUsuario: (nuevoUsuario) => {
                 setStore({ usuario: nuevoUsuario });
+            },
+
+            validarSenhas: (newPassword, confirmNewPassword) => {
+                if (newPassword && newPassword !== confirmNewPassword) {
+                    return "Las contraseñas no coinciden.";
+                }
+                return null;
+            },
+
+            submitUsuario: (form) => {
+                const { usuario } = getStore();
+                const { validarSenhas, actualizarUsuario } = getActions();
+                const error = validarSenhas(form.newPassword, form.confirmNewPassword);
+
+                if (error) {
+                    alert(error);
+                    return;
+                }
+
+                const updatedUserData = {
+                    ...form,
+                    password: form.newPassword ? form.newPassword : usuario.password,
+                };
+
+                fetch(`${process.env.BACKEND_URL}/api/update_user`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(updatedUserData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        actualizarUsuario(updatedUserData);
+                        alert("Los datos han sido actualizados.");
+                    } else {
+                        alert("Error al actualizar los datos.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    alert('Error al actualizar los datos.');
+                });
             }
         }
     };

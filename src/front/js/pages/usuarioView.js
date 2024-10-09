@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from '../store/appContext';
-import '../../styles/usuarioView.css'; 
+import '../../styles/usuarioView.css';
 
 const UsuarioView = () => {
     const { store, actions } = useContext(Context);
@@ -23,31 +23,16 @@ const UsuarioView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        // Verificar que las contraseñas coincidan antes de enviar el formulario
-        if (form.newPassword && form.newPassword !== form.confirmNewPassword) {
-            alert("Las contraseñas no coinciden.");
-            return;
-        }
-
-        // Actualizar el usuario con los cambios
-        const updatedUserData = {
-            ...form,
-            password: form.newPassword ? form.newPassword : store.usuario.password
-        };
-
-        actions.actualizarUsuario(updatedUserData);
-        alert("Los datos han sido actualizados.");
+        actions.submitUsuario(form);
     };
-
+    
     return (
         <div className="vista"> 
             <div className="campo">
-                <h1 className="titulo"><strong> Editar tu perfil </strong></h1>
+                <h1 className="titulo"><strong>Editar tu perfil</strong></h1>
                 <form className="edit-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Nombre completo</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -60,7 +45,6 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="email"
@@ -73,7 +57,6 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="newPassword">Nueva Contraseña</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -81,13 +64,11 @@ const UsuarioView = () => {
                             name="newPassword"
                             value={form.newPassword}
                             onChange={handleChange}
-                            placeholder=""
                         />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -101,7 +82,6 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -112,10 +92,9 @@ const UsuarioView = () => {
                             placeholder="Calle, número, bloque, puerta"
                         />
                     </div>
-             
+
                     <div className="form-group">
                         <label htmlFor="codigoPostal">Código Postal</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -129,7 +108,6 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="ciudad">Ciudad</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -140,8 +118,7 @@ const UsuarioView = () => {
                             placeholder="Tu ciudad"
                         />
                     </div>
-<br></br>
-<br></br>
+
                     <button type="submit" className="guardar btn-submit">Guardar los cambios</button>
                 </form>
             </div>
