@@ -98,7 +98,6 @@ class Pedido(db.Model):
     total_facturacion = db.Column(db.Float, nullable=False)
     stripe_session_id = db.Column(db.String(255), unique=True)
   
-
     carrito = db.relationship('CarritoDeCompra', backref=db.backref('pedidos', lazy=True))
     usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
 

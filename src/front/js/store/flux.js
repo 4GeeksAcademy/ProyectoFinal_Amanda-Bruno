@@ -30,8 +30,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.error('Error en la solicitud:', error);
 				alert('Error al registrar: ' + error.message);
 			});
-		}
-	},
+		},
+
 	checkout: async () => {
 		const token = localStorage.getItem("token")
 		try {
@@ -49,8 +49,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			return false; 
 		}
 	}
-
-
-	};
+	},
+	}
+}
 
 export default getState;
