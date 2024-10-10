@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUser, faShoppingCart, faHeart, faCoffee, faAddressCard, faShop } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser, faShoppingCart, faCoffee, faAddressCard, faShop } from '@fortawesome/free-solid-svg-icons';
 import logoNav from "../../img/logoNav.png";
 import { Link } from 'react-router-dom';
 import LoginNavbar from "./loginNavbar";
@@ -43,7 +43,7 @@ const Navbar = () => {
                     </div>
 
                     <div className="dropdown">
-                        <Link to="/productos" className="btn productos-btn">
+                        <Link to="/todosProductos" className="btn productos-btn">
                             <FontAwesomeIcon icon={faCoffee} /> Productos
                         </Link>
                     </div>

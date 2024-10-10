@@ -5,9 +5,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
-import '../../styles/cardsProducts.css';
+import '../../styles/slideHome.css';
 
-function CardsProducts() {
+function slideHome() {
   return (
     <div className="container">
       <h1 className="heading">Orígenes de nuestros cafés</h1>
@@ -35,7 +35,7 @@ function CardsProducts() {
       >
         <SwiperSlide>
           <div className="slide-content">
-            <img src="https://img.freepik.com/free-photo/adult-harvesting-coffee_23-2151711625.jpg?t=st=1728513694~exp=1728517294~hmac=cbc53b740e56e58c5baf4fad949a588fa8e43118bd09aea70f3f04ef758ceeb3&w=740" alt="slide_image" />
+            <img src="https://img.freepik.com/free-photo/adult-harvesting-coffee_23-2151711628.jpg?ga=GA1.1.1279640314.1728513321&semt=ais_hybrid" alt="slide_image" />
             <div className="overlay">
               <a href="#" className="overlay-link">Brasil</a>
             </div>
@@ -171,7 +171,7 @@ function CardsProducts() {
 
         <SwiperSlide>
           <div className="slide-content">
-            <img src="https://img.freepik.com/free-photo/adult-harvesting-coffee_23-2151711628.jpg?ga=GA1.1.1279640314.1728513321&semt=ais_hybrid" alt="slide_image" />
+            <img src="https://img.freepik.com/free-photo/adult-harvesting-coffee_23-2151711625.jpg?t=st=1728513694~exp=1728517294~hmac=cbc53b740e56e58c5baf4fad949a588fa8e43118bd09aea70f3f04ef758ceeb3&w=740" alt="slide_image" />
             <div className="overlay">
               <a href="#" className="overlay-link">Honduras</a>
             </div>
@@ -293,4 +293,4 @@ function CardsProducts() {
   );
 }
 
-export default CardsProducts;
+export default slideHome;
