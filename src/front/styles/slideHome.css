@@ -7,7 +7,9 @@
   .heading {
     padding: 1rem 0;
     font-size: 2.5rem;
+    justify-content: center;
     text-align: center;
+    color:#ac9766
   }
   
   .swiper_container {
@@ -44,6 +46,7 @@
   
   .slider-controler .swiper-button-prev,
   .slider-controler .swiper-button-next {
+   
     background: var(--white);
     width: 3.5rem;
     height: 3.5rem;
@@ -77,13 +80,13 @@
 }
 
 .overlay-link {
-    color: #eaccacba;
+    color: #eaccac;
     font-size: 2rem;
 
 }
 
 .overlay-link:hover {
-    color: #bae5e1;
+    color: #4caf50;
 }
   
   @media (max-width: 768px) {
