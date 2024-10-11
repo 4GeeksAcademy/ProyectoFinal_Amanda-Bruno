@@ -33,6 +33,7 @@ const UsuarioView = () => {
                 <form className="edit-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Nombre completo</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -45,6 +46,7 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="email"
@@ -54,9 +56,10 @@ const UsuarioView = () => {
                             readOnly
                         />
                     </div>
-
+                    
                     <div className="form-group">
                         <label htmlFor="newPassword">Nueva Contraseña</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -69,6 +72,7 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -82,6 +86,7 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -95,6 +100,7 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="codigoPostal">Código Postal</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -108,6 +114,7 @@ const UsuarioView = () => {
 
                     <div className="form-group">
                         <label htmlFor="ciudad">Ciudad</label>
+                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -118,7 +125,8 @@ const UsuarioView = () => {
                             placeholder="Tu ciudad"
                         />
                     </div>
-
+                    <br></br>
+                    <br></br>
                     <button type="submit" className="guardar btn-submit">Guardar los cambios</button>
                 </form>
             </div>

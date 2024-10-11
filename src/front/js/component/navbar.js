@@ -95,15 +95,15 @@ const Navbar = () => {
                                 </div>
                             ) : (
                                 <button className="btn login-btn" onClick={handleLoginClick}>
-                                    <FontAwesomeIcon icon={faUser} /> Mi Cuenta
+                                    <FontAwesomeIcon icon={faUser} /> Iniciar sesión
                                 </button>
                             )}
                         </div>
                     </div>
                 </div>
             </nav>
-
-            {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} />} 
+            
+            {showLoginModal && <LoginNavbar handleCloseModal={handleCloseModal} setIsAuthenticated={setIsAuthenticated} />} 
         </div>
     );
 };

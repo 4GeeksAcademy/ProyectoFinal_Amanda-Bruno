@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import '../../styles/loginNavbar.css';
 
-const LoginNavbar = ({ handleCloseModal, onLoginSuccess }) => {
+const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
     const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -15,13 +15,14 @@ const LoginNavbar = ({ handleCloseModal, onLoginSuccess }) => {
             email, 
             password, 
             () => {
-                onLoginSuccess();
                 handleCloseModal();
             },
             (errorMessage) => {
                 setError(errorMessage);
             }
         );
+
+        setIsAuthenticated (true)
     };
 
     return (

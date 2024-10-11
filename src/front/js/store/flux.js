@@ -206,14 +206,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                     return response.json();
                 })
+
                 .then(data => {
-                    if (data.token) {
-                        sessionStorage.setItem('token', data.token); 
-                        setStore({ usuario: form });
-                        alert('Registro exitoso');
-                        navigate('/usuarioView'); 
-                    }
+					console.log(data)
+                        navigate('/login'); 
                 })
+				
                 .catch(error => {
                     console.error('Error en la solicitud:', error);
                     alert('Error al registrar: ' + error.message);
@@ -221,29 +219,35 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             loginUsuario: (email, password, onSuccess, onError) => {
-                fetch(`${process.env.BACKEND_URL}/api/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.token) {
-                        sessionStorage.setItem('token', data.token);
-                        console.log("Inicio de sesión exitoso");
-                        if (onSuccess) onSuccess(); 
-                    } else {
-                        console.error('Error al iniciar sesión:', data.error);
-                        if (onError) onError(data.error || "Error desconocido al iniciar sesión.");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                    if (onError) onError('Error de conexión. Inténtalo de nuevo.');
-                });
-            },
+				fetch(`${process.env.BACKEND_URL}/api/login`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ email, password })
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.token) {
+						sessionStorage.setItem('token', data.token);
+						console.log("Inicio de sesión exitoso");
+						if (onSuccess) onSuccess(); 
+					} else {
+						const errorMessage = data.error === "Usuario no encontrado"
+							? "El usuario no existe. Por favor, regístrate."
+							: data.error === "Email o contraseña incorrectos"
+							? "El email o la contraseña son incorrectos."
+							: data.error || "Error desconocido al iniciar sesión.";
+			
+						console.error('Error al iniciar sesión:', errorMessage);
+						if (onError) onError(errorMessage);
+					}
+				})
+				.catch(error => {
+					console.error('Error en la solicitud:', error);
+					if (onError) onError('Error de conexión. Inténtalo de nuevo.');
+				});
+			},			
 
             actualizarUsuario: (nuevoUsuario) => {
                 setStore({ usuario: nuevoUsuario });
