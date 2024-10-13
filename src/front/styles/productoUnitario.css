@@ -1,0 +1,113 @@
+.container {
+    width: 80%;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .col {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .image-section {
+    text-align: center;
+  }
+  
+  .product-image {
+    width: 70%;
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+    color: #888;
+  }
+  
+  .details-section {
+    padding: 20px;
+  }
+  
+  .details-section h5 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .description {
+    font-size: 0.95rem;
+    color: #666;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  select, input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .quantity-control .quantity-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantity-control button {
+    background-color: #ddd;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .quantity-control input {
+    text-align: center;
+    width: 50px;
+    margin: 0 10px;
+  }
+  
+  .add-to-cart {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .add-to-cart:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .add-to-cart:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  

@@ -1,12 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
+import injectContext from "./store/appContext";
 
 import Home from "./pages/home";
 import  QuienSomos  from "./pages/quienSomos"
-import injectContext from "./store/appContext";
-
 import Navbar from "./component/navbar";
 import Footer from "./component/footer";
 import Registrar from "./pages/registrar";
@@ -15,7 +13,8 @@ import TerminosCondiciones from "./pages/terminosCondiciones";
 import Privacidad from "./pages/privacidad";
 import Envios from "./pages/envios";
 import Devoluciones from "./pages/devoluciones";
-import UsuarioView from "./pages/usuarioView";
+import ProductoUnitario from "./pages/productoUnitario";
+import TodosProductos from "./pages/todosProductos";
  
 //create your first component
 const Layout = () => {
@@ -28,7 +27,6 @@ const Layout = () => {
     return (
         <div>
         <BrowserRouter basename={basename}>
-            <ScrollToTop>
                 <Navbar />
                 <Routes>
                     <Route element={<Home />} path="/" />
@@ -39,11 +37,11 @@ const Layout = () => {
                     <Route path="/privacidad" element={<Privacidad />} />
                     <Route path="/envios" element={<Envios />} />
                     <Route path="/devoluciones" element={<Devoluciones />} />
-                    <Route path="/usuarioView" element={<UsuarioView />} />
+                    <Route path="/producto/:id" element={<ProductoUnitario />} />
+                    <Route path="/todosProductos" element={<TodosProductos />} />
                     <Route element={<h1>Not found!</h1>} />
                 </Routes>
                 <Footer />
-            </ScrollToTop>
         </BrowserRouter>
     </div>
 );

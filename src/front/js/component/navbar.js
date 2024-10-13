@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUser, faShoppingCart, faHeart, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser, faShoppingCart, faAddressCard, faCoffee, faShop } from '@fortawesome/free-solid-svg-icons';
 import logoNav from "../../img/logoNav.png";
 import { Link } from 'react-router-dom';
 import LoginNavbar from "./loginNavbar";
@@ -57,11 +57,17 @@ const Navbar = () => {
                 <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
 
                     <div className="navbar-right">
-                        <div className="dropdown">
-                            <Link to="/productos" className="btn productos-btn">
-                                <FontAwesomeIcon icon={faCoffee} /> Productos
-                            </Link>
-                        </div>
+                    <div className="dropdown">
+                        <Link to="/quienSomos" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faShop} /> Nuestro café
+                        </Link>
+                    </div>
+
+                    <div className="dropdown">
+                        <Link to="/todosProductos" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faCoffee} /> Productos
+                        </Link>
+                    </div>
 
                         <div className="dropdown">
                             <Link to="/carritoCompra" className="btn cart-btn">
@@ -73,10 +79,10 @@ const Navbar = () => {
                         </div>
 
                         <div className="dropdown">
-                            <Link to="/registrar" className="btn productos-btn">
-                                <FontAwesomeIcon icon={faUser} /> Registrar
-                            </Link>
-                        </div>
+                        <Link to="/registrar" className="btn productos-btn">
+                            <FontAwesomeIcon icon={faAddressCard} /> Registrar
+                        </Link>
+                    </div>
 
                         <div className="dropdown">
                             {isAuthenticated ? (
