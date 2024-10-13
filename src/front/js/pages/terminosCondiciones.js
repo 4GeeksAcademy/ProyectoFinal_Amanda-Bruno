@@ -5,7 +5,7 @@ const TerminosCondiciones = () => {
     return (
         <div className="texto">
 
-            <h1><strong> TÉRMINOS DE SERVICIO </strong></h1>
+            <h1><strong> Término y condiciones </strong></h1>
             <br></br>
             <br></br>
             <h5> VISIÓN DE CONJUNTO </h5>
