@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom"; 
 import "../../styles/registrar.css";
-import { Context } from '../store/appContext'
+import { Context } from '../store/appContext';
 
 const Registrar = () => {
     const [form, setForm] = useState({
@@ -9,7 +10,8 @@ const Registrar = () => {
         password: ""
     });
 
-    const {store, actions} = useContext(Context)
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         setForm({
@@ -21,9 +23,8 @@ const Registrar = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(form);
-    
-        actions.registrar(form);
-
+        
+        actions.registrar(form, navigate);
     };    
       
     return (

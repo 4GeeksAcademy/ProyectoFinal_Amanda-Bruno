@@ -72,7 +72,7 @@ const CarritoCompra = () => {
                 </div>
                 <div className="terms">
                     <input type="checkbox" id="terms" />
-                    <label htmlFor="terms">He leído y acepto los términos y condiciones <a href="/">términos y condiciones</a> de uso.</label>
+                    <label htmlFor="terms">He leído y acepto los términos y condiciones <a href="/terminosCondiciones">términos y condiciones</a> de uso.</label>
                 </div>
                 <button className="pagar-btn">Pagar</button>
             </div>

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import '../../styles/loginNavbar.css';
 
-const LoginNavbar = ({ handleCloseModal }) => {
+const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
+    const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -9,38 +11,24 @@ const LoginNavbar = ({ handleCloseModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('https://potential-winner-pj7vx5qp4wvrcx49-3001.app.github.dev/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        actions.loginUsuario(
+            email, 
+            password, 
+            () => {
+                handleCloseModal();
             },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.token) {
-                sessionStorage.setItem('token', data.token);
-                console.log("Bienvenido a tu cuenta!", data);
-                handleCloseModal();  
-            } else {
-                setError(data.error);
-                console.error('Error al iniciar sesión:', data.error);
+            (errorMessage) => {
+                setError(errorMessage);
             }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-            setError('Email o contraseña incorrecta. Inténtalo de nuevo.');
-        });
+        );
+
+        setIsAuthenticated (true)
     };
 
     return (
         <div className="modal show d-block">
             <div className="modal-dialog">
                 <div className="modal-content">
-
                     <div className="modal-header">
                         <h5 className="modal-title">ENTRAR EN EL MUNDO ABI&A</h5>
                         <button
@@ -77,7 +65,6 @@ const LoginNavbar = ({ handleCloseModal }) => {
                             </button>
                         </form>
                     </div>
-                    
                 </div>
             </div>
         </div>
