@@ -112,43 +112,55 @@ def init_productos():
             productos = json.load(f)
     except FileNotFoundError:
         return jsonify({"error": "productos.json no encontrado"}), 404
+    
+    multiplicadores_peso = {
+        "250": 1,
+        "500": 1.5,
+        "750": 2.0,
+        "1000": 2.5
+    }
 
-    # Agregar productos a la base de datos
+    # Agregar productos a la base de datos y a Stripe
     for producto in productos:
-        producto_stripe = stripe.Product.create(
-            name=producto['nombre'],
-            description=producto['descripcion'],
-            images=[producto['imagen_url']],
-            metadata={
-                'region': producto['region'],
-                'peso': str(producto['peso']),
-                'nivel_tostado': str(producto['nivel_tostado']),
-                'perfil_sabor': ', '.join(producto['perfil_sabor']['notas']),
-                'opcion_molido': ', '.join(producto['opcion_molido']['tipos'])
-            }
-        )
+        for peso in producto['peso']['peso']:
+            precio_base = producto['precio'] * 100
+            multiplicador = multiplicadores_peso[str(peso)]
+            precio_con_multiplicador = precio_base * multiplicador
 
-        precio_stripe = stripe.Price.create(
-            product=producto_stripe.id,
-            unit_amount=int(producto['precio'] * 100),  
-            currency='eur'
-        )
+            producto_stripe = stripe.Product.create(
+                name=f"{producto['nombre']} {peso}",
+                description=producto['descripcion'],
+                images=[producto['imagen_url']],
+                metadata={
+                    'region': producto['region'],
+                    'peso': str(peso),
+                    'nivel_tostado': str(producto['nivel_tostado']),
+                    'perfil_sabor': ', '.join(producto['perfil_sabor']['notas']),
+                    'opcion_molido': ', '.join(producto['opcion_molido']['tipos'])
+                }
+            )
 
-        new_producto = Producto(
-            producto_id=producto['producto_id'],
-            nombre=producto['nombre'],
-            descripcion=producto['descripcion'],
-            precio=producto['precio'],
-            region=producto['region'],
-            peso=producto['peso'],
-            perfil_sabor=producto['perfil_sabor'],
-            opcion_molido=producto['opcion_molido'],
-            nivel_tostado=producto['nivel_tostado'],
-            imagen_url=producto['imagen_url'],
-            precio_stripe_id=precio_stripe.id,
-            producto_stripe_id=producto_stripe.id
-        )
-        db.session.add(new_producto)
+            precio_stripe = stripe.Price.create(
+                product=producto_stripe.id,
+                unit_amount=int(precio_con_multiplicador),
+                currency='eur'
+            )
+
+            new_producto = Producto(
+                producto_id=f"{producto['producto_id']}_{peso}",  
+                nombre=f"{producto['nombre']} {peso}",
+                descripcion=producto['descripcion'],
+                precio=precio_con_multiplicador / 100,
+                region=producto['region'],
+                peso=peso,
+                perfil_sabor=producto['perfil_sabor'],
+                opcion_molido=producto['opcion_molido'],
+                nivel_tostado=producto['nivel_tostado'],
+                imagen_url=producto['imagen_url'],
+                precio_stripe_id=precio_stripe.id,
+                producto_stripe_id=producto_stripe.id
+            )
+            db.session.add(new_producto)
 
     db.session.commit()
     return jsonify({"mensaje": "Productos cargados con exito"}), 201
@@ -156,12 +168,31 @@ def init_productos():
 # GET Productos (todos)
 @api.route('/productos', methods=['GET'])
 def get_productos():
+    peso_seleccionado = request.args.get('peso', default=250, type=int)
+
     # Fetch todos los productos
     productos = Producto.query.all()
     if not productos:
         return jsonify({"error": "No hay productos en la base de datos"}), 404
+    
+    def ajustar_precio(precio_base, peso):
+        multiplicador_peso = {
+            250: 1,    
+            500: 1.5,  
+            750: 2,    
+            1000: 2.5
+        }
+        return precio_base * multiplicador_peso.get(peso, 1)
+    
+    productos_data = []
+    for producto in productos:
+        # Ajustar el precio del producto según el peso seleccionado
+        precio_ajustado = ajustar_precio(producto.precio, peso_seleccionado)
+        producto_data = producto.serialize()
+        producto_data['precio_ajustado'] = round(precio_ajustado, 2)
+        productos_data.append(producto_data)
 
-    return jsonify([producto.serialize() for producto in productos]), 200
+    return jsonify(productos_data), 200
 
 # GET Producto por ID
 @api.route('/productos/<int:producto_id>', methods=['GET'])
@@ -171,7 +202,23 @@ def get_producto_by_id(producto_id):
     if not producto:
         return abort(404, description=f"Producto con ID {producto_id} no encontrado")
     
-    return jsonify(producto.serialize()), 200
+    peso_seleccionado = request.args.get('peso', default=250, type=int)
+
+    def ajustar_precio(precio_base, peso):
+        multiplicador_peso = {
+            250: 1,    
+            500: 1.5,  
+            750: 2,   
+            1000: 2.5  
+        }
+        return precio_base * multiplicador_peso.get(peso, 1)
+
+    precio_ajustado = ajustar_precio(producto.precio, peso_seleccionado)
+
+    producto_data = producto.serialize()
+    producto_data['precio_ajustado'] = round(precio_ajustado, 2)
+
+    return jsonify(producto_data), 200
 
 if __name__ == '__main__':
     api.run(debug=True)
