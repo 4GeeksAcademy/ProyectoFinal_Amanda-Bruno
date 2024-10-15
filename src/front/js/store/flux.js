@@ -95,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then(response => response.json())
 				.then(data => {
 					if (data.success) {
-						setStore({ usuario: data.usuario }); // Actualiza los datos del usuario en el store con la respuesta
+						setStore({ usuario: data.usuario });
 						alert("Los datos han sido actualizados.");
 					} else {
 						alert("Error al actualizar los datos.");
@@ -105,7 +105,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error('Error en la solicitud:', error);
 					alert('Error al actualizar los datos.');
 				});
-			}			
+			},
+			
+			getProductos: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/productos");
+					if (!response.ok) throw new Error("Error al obtener productos");
+					const data = await response.json();
+					setStore({ cafe: data });
+				} catch (error) {
+					console.error("Error:", error);
+				}
+			},
+			getProductoById: async (id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${id}`);
+					if (!response.ok) throw new Error("Error al obtener el producto");
+					const data = await response.json();
+					return data;  
+				} catch (error) {
+					console.error("Error:", error);
+					return null;
+				}
+			}
+			
+			
         }
     };
 };
