@@ -35,6 +35,7 @@ def create_usuario():
 
     # Crear nuevo usuario
     new_usuario = Usuario(
+        nombre_completo=data['name'],
         email=data['email'],
         password=hashed_password
     )
@@ -120,7 +121,7 @@ def login():
         db.session.commit()
         session.pop('carrito', None)  # Limpiar carrito de la sesión
 
-    return jsonify({"mensaje": "Inicio de sesión exitoso", "token": token}), 200
+    return jsonify({"mensaje": "Inicio de sesión exitoso", "token": token, "user": usuario.serialize()}), 200
 
 #POST Logout - Cerrar sesión
 @api.route('/logout', methods=['POST'])
@@ -202,25 +203,8 @@ def get_productos():
     productos = Producto.query.all()
     if not productos:
         return jsonify({"error": "No hay productos en la base de datos"}), 404
-    
-    def ajustar_precio(precio_base, peso):
-        multiplicador_peso = {
-            250: 1,    
-            500: 1.5,  
-            750: 2,    
-            1000: 2.5
-        }
-        return precio_base * multiplicador_peso.get(peso, 1)
-    
-    productos_data = []
-    for producto in productos:
-        # Ajustar el precio del producto según el peso seleccionado
-        precio_ajustado = ajustar_precio(producto.precio, peso_seleccionado)
-        producto_data = producto.serialize()
-        producto_data['precio_ajustado'] = round(precio_ajustado, 2)
-        productos_data.append(producto_data)
 
-    return jsonify(productos_data), 200
+    return jsonify({'productos':[producto.serialize() for producto in productos]}), 200
 
 # GET Producto por ID
 @api.route('/productos/<int:producto_id>', methods=['GET'])
@@ -229,27 +213,8 @@ def get_producto_by_id(producto_id):
     
     if not producto:
         return abort(404, description=f"Producto con ID {producto_id} no encontrado")
-    
-    peso_seleccionado = request.args.get('peso', default=250, type=int)
 
-    def ajustar_precio(precio_base, peso):
-        multiplicador_peso = {
-            250: 1,    
-            500: 1.5,  
-            750: 2,   
-            1000: 2.5  
-        }
-        return precio_base * multiplicador_peso.get(peso, 1)
-
-    precio_ajustado = ajustar_precio(producto.precio, peso_seleccionado)
-
-    producto_data = producto.serialize()
-    producto_data['precio_ajustado'] = round(precio_ajustado, 2)
-
-    return jsonify(producto_data), 200
-
-if __name__ == '__main__':
-    api.run(debug=True)
+    return jsonify({'producto': producto.serialize()}), 200
 
 # POST - Agregar al CarritoDeCompras
 @api.route('/carrito/agregar', methods=['POST'])

@@ -84,7 +84,7 @@ const Navbar = () => {
                     </div>
 
                         <div className="dropdown">
-                            {isAuthenticated ? (
+                            {localStorage.getItem('token') ? (
                                 <div className="dropdown">
                                     <button className="btn login-btn">
                                         <FontAwesomeIcon icon={faUser} /> Mi Cuenta
