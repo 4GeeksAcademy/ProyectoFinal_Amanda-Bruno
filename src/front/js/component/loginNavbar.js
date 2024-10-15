@@ -15,14 +15,13 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
             email, 
             password, 
             () => {
+                setIsAuthenticated(true);
                 handleCloseModal();
             },
             (errorMessage) => {
                 setError(errorMessage);
             }
         );
-
-        setIsAuthenticated (true)
     };
 
     return (
