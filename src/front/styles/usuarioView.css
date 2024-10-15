@@ -1,9 +1,8 @@
-
 .titulo {
     padding-top: 30px;
     color: #556967;
     text-align: center;
-    font-family: 'DM Sans';
+    font-family: 'DM Sans', sans-serif;
 }
 
 .edit-form {
@@ -13,25 +12,49 @@
 }
 
 .imput {
-    width: 50%;
+    width: 80%;
+    max-width: 500px;
     padding: 8px;
     box-sizing: border-box;
-    border-color: rgb(75, 46, 15);
+    border: 1px solid rgb(75, 46, 15);
+    margin: 10px auto; 
+    display: block;
 }
 
 .guardar {
     cursor: pointer;
-    position: relative;
     overflow: hidden;
     background-color: #556967;
-    color:  #eaccac;
+    color: #eaccac;
     border: none;
     border-radius: 5px;
     padding: 10px;
-    margin-left: 317px;
-    margin-right: 317px;
+    width: 80%;
+    max-width: 300px;
+    margin: 20px auto;
+    display: block;
 }
 
 .guardar:hover {
     background-color: rgba(75, 46, 15, 0.618);
+}
+
+@media (min-width: 768px) {
+    .imput {
+        width: 60%;
+    }
+    
+    .guardar {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .imput {
+        width: 50%;
+    }
+    
+    .guardar {
+        width: 30%;
+    }
 }

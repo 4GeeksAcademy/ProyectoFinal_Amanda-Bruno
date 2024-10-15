@@ -389,8 +389,3 @@ def checkout():
         print(f"Un error a ocurrido en el chackout: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-        
-
-
-
-

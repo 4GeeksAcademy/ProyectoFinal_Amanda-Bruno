@@ -10,7 +10,7 @@ const Registrar = () => {
         password: ""
     });
 
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const navigate = useNavigate(); 
 
     const handleChange = (e) => {
@@ -24,9 +24,11 @@ const Registrar = () => {
         e.preventDefault();
         console.log(form);
         
-        actions.registrar(form, navigate);
-    };    
-      
+        actions.registrar(form, () => {
+            navigate('/loginView'); 
+        });
+    };   
+    
     return (
         <div className="registrar-container">
             <h1><strong> Regístrate </strong></h1>

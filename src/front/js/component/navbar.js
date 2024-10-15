@@ -14,7 +14,6 @@ const Navbar = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        // Verifica si hay un token al montar el componente
         const token = sessionStorage.getItem('token');
         if (token) {
             setIsAuthenticated(true);
