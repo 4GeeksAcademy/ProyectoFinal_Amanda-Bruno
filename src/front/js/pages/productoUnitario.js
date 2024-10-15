@@ -5,23 +5,21 @@ import '../../styles/productoUnitario.css';
 
 const ProductoUnitario = () => {
     const { id } = useParams();
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [producto, setProducto] = useState(null);
+
     const [peso, setPeso] = useState("");
     const [precioAjustado, setPrecioAjustado] = useState(null);
     const [molienda, setMolienda] = useState("");
     const [cantidad, setCantidad] = useState(1);
 
     useEffect(() => {
-        const fetchProducto = async () => {
-            const productoData = await actions.getProductoById(id);
-            if (productoData) setProducto(productoData);
-        };
-        fetchProducto();
+        const productoEncontrado = store.cafe.find((item) => item.producto_id === parseInt(id));
+        setProducto(productoEncontrado);
         if (productoEncontrado && peso) {
             fetchPrecioAjustado(peso); 
         }
-    }, [id, peso, actions]);
+    }, [id, peso, store.cafe]);
 
     const fetchPrecioAjustado = async (pesoSeleccionado) => {
         try {
@@ -35,7 +33,7 @@ const ProductoUnitario = () => {
   
     const handleAddToCart = () => {
         if (peso && molienda) {
-            actions.addToCart(producto.producto_id, cantidad);
+            actions.addToCart(producto.producto_id, cantidad, peso, molienda);
             alert(`Producto agregado: ${cantidad} unidad(es), Peso: ${peso}, Molienda: ${molienda}`);
         } else {
             alert("Por favor, seleccione el peso y la molienda.");
@@ -78,7 +76,7 @@ const ProductoUnitario = () => {
                         <label>Molienda</label>
                         <select value={molienda} onChange={(e) => setMolienda(e.target.value)}>
                             <option value="">Seleccione</option>
-                            {producto.opcion_molido?.tipos.map((opcion) => (
+                            {producto.opcion_molido.tipos.map((opcion) => (
                                 <option key={opcion} value={opcion}>{opcion}</option>
                             ))}
                         </select>
