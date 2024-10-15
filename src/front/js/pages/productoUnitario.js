@@ -5,21 +5,23 @@ import '../../styles/productoUnitario.css';
 
 const ProductoUnitario = () => {
     const { id } = useParams();
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const [producto, setProducto] = useState(null);
-
     const [peso, setPeso] = useState("");
     const [molienda, setMolienda] = useState("");
     const [cantidad, setCantidad] = useState(1);
 
     useEffect(() => {
-        const productoEncontrado = store.cafe.find((item) => item.producto_id === parseInt(id));
-        setProducto(productoEncontrado);
-    }, [id, store.cafe]);
+        const fetchProducto = async () => {
+            const productoData = await actions.getProductoById(id);
+            if (productoData) setProducto(productoData);
+        };
+        fetchProducto();
+    }, [id, actions]);
 
     const handleAddToCart = () => {
         if (peso && molienda) {
-            actions.addToCart(producto.producto_id, cantidad);
+            actions.addToCart(producto.producto_id, cantidad, peso, molienda);  // Suponiendo que tu acción puede manejar estos parámetros
             alert(`Producto agregado: ${cantidad} unidad(es), Peso: ${peso}, Molienda: ${molienda}`);
         } else {
             alert("Por favor, seleccione el peso y la molienda.");
@@ -61,7 +63,7 @@ const ProductoUnitario = () => {
                         <label>Molienda</label>
                         <select value={molienda} onChange={(e) => setMolienda(e.target.value)}>
                             <option value="">Seleccione</option>
-                            {producto.opcion_molido.tipos.map((opcion) => (
+                            {producto.opcion_molido?.tipos.map((opcion) => (
                                 <option key={opcion} value={opcion}>{opcion}</option>
                             ))}
                         </select>
