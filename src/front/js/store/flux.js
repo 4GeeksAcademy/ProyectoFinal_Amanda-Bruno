@@ -248,42 +248,43 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             submitUsuario: (form) => {
-                const { usuario } = getStore();
-                const { validarSenhas, actualizarUsuario } = getActions();
-                const error = validarSenhas(form.newPassword, form.confirmNewPassword);
-
-                if (error) {
-                    alert(error);
-                    return;
-                }
-
-                const updatedUserData = {
-                    ...form,
-                    password: form.newPassword ? form.newPassword : usuario.password,
-                };
-
-                fetch(`${process.env.BACKEND_URL}/api/update_user`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify(updatedUserData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        actualizarUsuario(updatedUserData);
-                        alert("Los datos han sido actualizados.");
-                    } else {
-                        alert("Error al actualizar los datos.");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                    alert('Error al actualizar los datos.');
-                });
-            }
+				const { usuario } = getStore();
+				const { validarSenhas } = getActions();
+				const error = validarSenhas(form.newPassword, form.confirmNewPassword);
+			
+				if (error) {
+					alert(error);
+					return;
+				}
+			
+				const updatedUserData = {
+					...usuario,
+					...form,
+					password: form.newPassword || usuario.password,
+				};
+			
+				fetch(`${process.env.BACKEND_URL}/api/update_user`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+					},
+					body: JSON.stringify(updatedUserData)
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						setStore({ usuario: data.usuario }); // Actualiza los datos del usuario en el store con la respuesta
+						alert("Los datos han sido actualizados.");
+					} else {
+						alert("Error al actualizar los datos.");
+					}
+				})
+				.catch(error => {
+					console.error('Error en la solicitud:', error);
+					alert('Error al actualizar los datos.');
+				});
+			}			
         }
     };
 };

@@ -10,6 +10,7 @@ const UsuarioView = () => {
         confirmNewPassword: "" 
     });
 
+    // Actualiza el formulario cuando se cambian los datos del usuario en el store
     useEffect(() => {
         setForm({ ...store.usuario, newPassword: "", confirmNewPassword: "" });
     }, [store.usuario]);
@@ -23,7 +24,7 @@ const UsuarioView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        actions.submitUsuario(form);
+        actions.submitUsuario(form); // Llama a la acción para guardar los cambios
     };
     
     return (
@@ -31,6 +32,7 @@ const UsuarioView = () => {
             <div className="campo">
                 <h1 className="titulo"><strong>Editar tu perfil</strong></h1>
                 <form className="edit-form" onSubmit={handleSubmit}>
+                    {/* Campos del formulario */}
                     <div className="form-group">
                         <label htmlFor="name">Nombre completo</label>
                         <br></br>
@@ -43,7 +45,6 @@ const UsuarioView = () => {
                             onChange={handleChange}
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <br></br>
@@ -56,7 +57,6 @@ const UsuarioView = () => {
                             readOnly
                         />
                     </div>
-                    
                     <div className="form-group">
                         <label htmlFor="newPassword">Nueva Contraseña</label>
                         <br></br>
@@ -69,7 +69,6 @@ const UsuarioView = () => {
                             onChange={handleChange}
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
                         <br></br>
@@ -83,7 +82,7 @@ const UsuarioView = () => {
                             placeholder="Confirma tu nueva contraseña"
                         />
                     </div>
-
+                    {/* Campos adicionales */}
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
                         <br></br>
@@ -97,7 +96,6 @@ const UsuarioView = () => {
                             placeholder="Calle, número, bloque, puerta"
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="codigoPostal">Código Postal</label>
                         <br></br>
@@ -111,7 +109,6 @@ const UsuarioView = () => {
                             placeholder="Tu código postal"
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="ciudad">Ciudad</label>
                         <br></br>
