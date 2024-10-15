@@ -296,19 +296,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error:", error);
 				}
 			},
-			getProductoById: async (id) => {
+			getProductoById: async (id, peso) => {
+				const url = `${process.env.BACKEND_URL}/api/productos/${id}?peso=${peso}`;
+				console.log("Fetching URL:", url);
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${id}`);
-					if (!response.ok) throw new Error("Error al obtener el producto");
+					const response = await fetch(url);
+					if (!response.ok) {
+						console.error("Status Code:", response.status);  
+						throw new Error("Error al obtener el producto");
+					}
 					const data = await response.json();
-					return data;  
+					return data;
 				} catch (error) {
-					console.error("Error:", error);
+					console.error("Error al obtener el producto:", error);
 					return null;
 				}
-			}
-			
-			
+			}					
         }
     };
 };

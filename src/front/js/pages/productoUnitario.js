@@ -5,43 +5,39 @@ import '../../styles/productoUnitario.css';
 
 const ProductoUnitario = () => {
     const { id } = useParams();
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const [producto, setProducto] = useState(null);
-
-    const [peso, setPeso] = useState("");
-    const [precioAjustado, setPrecioAjustado] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); 
+    const [peso, setPeso] = useState(250); // Peso predeterminado
     const [molienda, setMolienda] = useState("");
     const [cantidad, setCantidad] = useState(1);
 
     useEffect(() => {
-        const productoEncontrado = store.cafe.find((item) => item.producto_id === parseInt(id));
-        setProducto(productoEncontrado);
-        if (productoEncontrado && peso) {
-            fetchPrecioAjustado(peso); 
-        }
-    }, [id, peso, store.cafe]);
+        const fetchProducto = async () => {
+            const productoData = await actions.getProductoById(id, peso);
+            if (productoData) {
+                setProducto(productoData);
+            } else {
+                console.error("No se encontró el producto.");
+            }
+            setIsLoading(false); 
+        };
+        fetchProducto();
+    }, [id, peso, actions]); // Incluye 'peso' como dependencia para actualizar el precio si se cambia
 
-    const fetchPrecioAjustado = async (pesoSeleccionado) => {
-        try {
-            const response = await fetch(`/api/productos/${id}?peso=${pesoSeleccionado}`);
-            const data = await response.json();
-            setPrecioAjustado(data.precio_ajustado);
-        } catch (error) {
-            console.error("Error al traer el precio:", error);
-        }
-    };
-  
     const handleAddToCart = () => {
         if (peso && molienda) {
-            actions.addToCart(producto.producto_id, cantidad, peso, molienda);
+            actions.addToCart(producto.producto_id, cantidad, peso, molienda); 
             alert(`Producto agregado: ${cantidad} unidad(es), Peso: ${peso}, Molienda: ${molienda}`);
         } else {
             alert("Por favor, seleccione el peso y la molienda.");
         }
     };
 
-    if (!producto) return <p>Cargando...</p>;
-    const total = (precioAjustado || producto.precio) * cantidad;
+    if (isLoading) return <p>Cargando...</p>; 
+    if (!producto) return <p>Producto no encontrado.</p>; 
+    
+    const total = producto.precio * cantidad;
 
     return (
         <div className="container">
@@ -63,12 +59,11 @@ const ProductoUnitario = () => {
 
                     <div className="form-group">
                         <label>Peso</label>
-                        <select value={peso} onChange={(e) => setPeso(e.target.value)}>
-                            <option value="">Seleccione</option>
-                            <option value="250">250g</option>
-                            <option value="500">500g</option>
-                            <option value="750">750g</option>
-                            <option value="1000">1kg</option>
+                        <select value={peso} onChange={(e) => setPeso(Number(e.target.value))}>
+                            <option value={250}>250g</option>
+                            <option value={500}>500g</option>
+                            <option value={750}>750g</option>
+                            <option value={1000}>1kg</option>
                         </select>
                     </div>
 
@@ -76,7 +71,7 @@ const ProductoUnitario = () => {
                         <label>Molienda</label>
                         <select value={molienda} onChange={(e) => setMolienda(e.target.value)}>
                             <option value="">Seleccione</option>
-                            {producto.opcion_molido.tipos.map((opcion) => (
+                            {producto.opcion_molido?.tipos.map((opcion) => (
                                 <option key={opcion} value={opcion}>{opcion}</option>
                             ))}
                         </select>
