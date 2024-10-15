@@ -59,11 +59,13 @@ const ProductoUnitario = () => {
 
                     <div className="form-group">
                         <label>Peso</label>
+
                         <select value={peso} onChange={(e) => setPeso(Number(e.target.value))}>
                             <option value={250}>250g</option>
                             <option value={500}>500g</option>
                             <option value={750}>750g</option>
                             <option value={1000}>1kg</option>
+
                         </select>
                     </div>
 
