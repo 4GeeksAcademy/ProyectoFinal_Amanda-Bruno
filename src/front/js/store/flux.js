@@ -129,7 +129,33 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error('Error en la solicitud:', error);
                     alert('Error al actualizar los datos.');
                 }
-            }
+            },
+            getProductos: async () => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setStore({ productos: data.productos });
+                    } else {
+                        console.error("Error al obtener los productos:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error en getProductos:", error);
+                }
+            },
+            getProductoById: async (producto_id) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setStore({ producto: data.producto });
+                    } else {
+                        console.error("Error al obtener el producto:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error en getProductoById:", error);
+                }
+            }         
         }
     };
 };
