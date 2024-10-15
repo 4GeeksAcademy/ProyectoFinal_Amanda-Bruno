@@ -65,8 +65,8 @@ const ProductoUnitario = () => {
                         <label>Peso</label>
                         <select value={peso} onChange={(e) => setPeso(e.target.value)}>
                             <option value="">Seleccione</option>
-                            <option value="250">250g</option>
-                            <option value="500">500g</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
                             <option value="750">750g</option>
                             <option value="1000">1kg</option>
                         </select>
