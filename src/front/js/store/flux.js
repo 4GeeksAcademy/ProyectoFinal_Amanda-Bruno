@@ -1,14 +1,10 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			usuario: {
-                name: "",
-                email: "",
-                direccion: "",
-				codigoPostal: "",
-                ciudad: "",
-            },
-			cafe: [
+			usuario: [
+
+			],
+			productos: [
 				
 			  ]
 		},
@@ -48,8 +44,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.token) {
-                        sessionStorage.setItem('token', data.token);
-                        console.log("Inicio de sesión exitoso");
+                        localStorage.setItem('token', data.token);
+                        console.log("Inicio de sesión exitoso"); 
+						setStore({usuario: data.user})
                         if (onSuccess) onSuccess();
                     } else {
                         const errorMessage = data.error || "Error desconocido al iniciar sesión.";
@@ -61,78 +58,78 @@ const getState = ({ getStore, getActions, setStore }) => {
                 });
             },
 
-            validarSenhas: (newPassword, confirmNewPassword) => {
-                if (newPassword && newPassword !== confirmNewPassword) {
-                    return "Las contraseñas no coinciden.";
-                }
-                return null;
-            },
+             getUsuarioData: async () => {
+                const token = sessionStorage.getItem('token');
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
 
-            submitUsuario: (form) => {
-				const { usuario } = getStore();
-				const { validarSenhas } = getActions();
-				const error = validarSenhas(form.newPassword, form.confirmNewPassword);
-			
-				if (error) {
-					alert(error);
-					return;
-				}
-			
-				const updatedUserData = {
-					...usuario,
-					...form,
-					password: form.newPassword || usuario.password,
-				};
-			
-				fetch(`${process.env.BACKEND_URL}/api/update_user`, {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-					},
-					body: JSON.stringify(updatedUserData)
-				})
-				.then(response => response.json())
-				.then(data => {
-					if (data.success) {
-						setStore({ usuario: data.usuario });
-						alert("Los datos han sido actualizados.");
-					} else {
-						alert("Error al actualizar los datos.");
+                    if (!response.ok) {
+                        throw new Error("No se pudieron obtener los datos del usuario");
+                    }
+
+                    const data = await response.json();
+                    setStore({ usuario: data });
+                    return data;
+                } catch (error) {
+                    console.error("Error al obtener los datos del usuario:", error);
+                }
+            },
+      
+            validarSenhas: (newPassword, confirmNewPassword) => {
+				if (newPassword || confirmNewPassword) {
+					if (newPassword.length < 6) {
+						return "La contraseña debe tener al menos 6 caracteres.";
 					}
-				})
-				.catch(error => {
-					console.error('Error en la solicitud:', error);
-					alert('Error al actualizar los datos.');
-				});
-			},
-			
-			getProductos: async () => {
-				try {
-					const response = await fetch(process.env.BACKEND_URL + "/api/productos");
-					if (!response.ok) throw new Error("Error al obtener productos");
-					const data = await response.json();
-					setStore({ cafe: data });
-				} catch (error) {
-					console.error("Error:", error);
-				}
-			},
-			getProductoById: async (id, peso) => {
-				const url = `${process.env.BACKEND_URL}/api/productos/${id}?peso=${peso}`;
-				console.log("Fetching URL:", url);
-				try {
-					const response = await fetch(url);
-					if (!response.ok) {
-						console.error("Status Code:", response.status);  
-						throw new Error("Error al obtener el producto");
+					if (newPassword !== confirmNewPassword) {
+						return "Las contraseñas no coinciden.";
 					}
-					const data = await response.json();
-					return data;
-				} catch (error) {
-					console.error("Error al obtener el producto:", error);
-					return null;
 				}
-			}					
+				return null; 
+			},			
+         
+            submitUsuario: async (form) => {
+                const { usuario } = getStore();
+                const error = getActions().validarSenhas(form.newPassword, form.confirmNewPassword);
+                if (error) {
+                    alert(error);
+                    return;
+                }
+
+                const updatedUserData = {
+                    ...usuario,
+                    ...form,
+                    password: form.newPassword || usuario.password,
+                };
+
+                const token = sessionStorage.getItem('token');
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(updatedUserData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Error al actualizar los datos");
+                    }
+
+                    const data = await response.json();
+                    setStore({ usuario: data.usuario });
+                    return data;
+                } catch (error) {
+                    console.error('Error en la solicitud:', error);
+                    alert('Error al actualizar los datos.');
+                }
+            }
         }
     };
 };
