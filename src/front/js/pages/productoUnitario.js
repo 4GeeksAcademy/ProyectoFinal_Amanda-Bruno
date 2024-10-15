@@ -8,6 +8,7 @@ const ProductoUnitario = () => {
     const { actions } = useContext(Context);
     const [producto, setProducto] = useState(null);
     const [peso, setPeso] = useState("");
+    const [precioAjustado, setPrecioAjustado] = useState(null);
     const [molienda, setMolienda] = useState("");
     const [cantidad, setCantidad] = useState(1);
 
@@ -17,11 +18,24 @@ const ProductoUnitario = () => {
             if (productoData) setProducto(productoData);
         };
         fetchProducto();
-    }, [id, actions]);
+        if (productoEncontrado && peso) {
+            fetchPrecioAjustado(peso); 
+        }
+    }, [id, peso, actions]);
 
+    const fetchPrecioAjustado = async (pesoSeleccionado) => {
+        try {
+            const response = await fetch(`/api/productos/${id}?peso=${pesoSeleccionado}`);
+            const data = await response.json();
+            setPrecioAjustado(data.precio_ajustado);
+        } catch (error) {
+            console.error("Error al traer el precio:", error);
+        }
+    };
+  
     const handleAddToCart = () => {
         if (peso && molienda) {
-            actions.addToCart(producto.producto_id, cantidad, peso, molienda);  // Suponiendo que tu acción puede manejar estos parámetros
+            actions.addToCart(producto.producto_id, cantidad);
             alert(`Producto agregado: ${cantidad} unidad(es), Peso: ${peso}, Molienda: ${molienda}`);
         } else {
             alert("Por favor, seleccione el peso y la molienda.");
@@ -29,7 +43,7 @@ const ProductoUnitario = () => {
     };
 
     if (!producto) return <p>Cargando...</p>;
-    const total = producto.precio * cantidad;
+    const total = (precioAjustado || producto.precio) * cantidad;
 
     return (
         <div className="container">
@@ -53,9 +67,10 @@ const ProductoUnitario = () => {
                         <label>Peso</label>
                         <select value={peso} onChange={(e) => setPeso(e.target.value)}>
                             <option value="">Seleccione</option>
-                            <option value="250g">250g</option>
-                            <option value="500g">500g</option>
-                            <option value="1kg">1kg</option>
+                            <option value="250">250g</option>
+                            <option value="500">500g</option>
+                            <option value="750">750g</option>
+                            <option value="1000">1kg</option>
                         </select>
                     </div>
 
