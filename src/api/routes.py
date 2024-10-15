@@ -45,6 +45,34 @@ def create_usuario():
 
     return jsonify({"mensaje": "Usuario creado con exito"}), 201
 
+# PUT Usuario
+@api.route('/usuario/update', methods=['PUT'])
+@jwt_required()
+def update_usuario():
+    data = request.get_json()
+    id = get_jwt_identity()
+
+    usuario = Usuario.query.get(id)
+
+    if not usuario:
+        return jsonify({"error": "El usuario no ha sido encontrado"}), 404
+
+    if 'email' in data:
+        usuario.email = data['email']
+    
+    if 'password' in data:
+        usuario.password = generate_password_hash(data['password'])
+
+    # Actualizar los campos del usuario según los datos recibidos
+    usuario.nombre_completo = data.get('nombreCompleto', usuario.nombre_completo)
+    usuario.direccion = data.get('direccion', usuario.direccion)
+    usuario.codigo_postal = data.get('codigoPostal', usuario.codigo_postal)
+    usuario.ciudad = data.get('ciudad', usuario.ciudad)
+    usuario.telefono = data.get('telefono', usuario.telefono)
+    
+    db.session.commit()
+    return jsonify({"mensaje": "Usuario actualizado con exito"}), 200
+
 # GET Usuario
 @api.route('/usuario/<email>', methods=['GET'])
 def get_usuario_by_email(email):
