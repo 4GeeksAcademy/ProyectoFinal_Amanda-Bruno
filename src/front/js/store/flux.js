@@ -69,11 +69,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 });
             },
 
-             getUsuarioData: async () => {
-                const token = sessionStorage.getItem('token');
+            update_usuario: async () => {
+                const token = localStorage.getItem('token');
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario`, {
-                        method: 'GET',
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
+                        method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`
@@ -92,7 +92,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
       
-            validarSenhas: (newPassword, confirmNewPassword) => {
+            validarPassword: (newPassword, confirmNewPassword) => {
 				if (newPassword || confirmNewPassword) {
 					if (newPassword.length < 6) {
 						return "La contraseña debe tener al menos 6 caracteres.";
@@ -106,7 +106,7 @@ const getState = ({ getStore, getActions, setStore }) => {
          
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
-                const error = getActions().validarSenhas(form.newPassword, form.confirmNewPassword);
+                const error = getActions().validarPassword(form.newPassword, form.confirmNewPassword);
                 if (error) {
                     alert(error);
                     return;
@@ -117,7 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     ...form,
                     password: form.newPassword || usuario.password,
                 };
-
+                console.log(updatedUserData)
                 const token = sessionStorage.getItem('token');
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
@@ -140,7 +140,33 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error('Error en la solicitud:', error);
                     alert('Error al actualizar los datos.');
                 }
-            }
+            },
+            getProductos: async () => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setStore({ productos: data.productos });
+                    } else {
+                        console.error("Error al obtener los productos:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error en getProductos:", error);
+                }
+            },
+            getProductoById: async (producto_id) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setStore({ producto: data.producto });
+                    } else {
+                        console.error("Error al obtener el producto:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error en getProductoById:", error);
+                }
+            }         
         }
     };
 };
