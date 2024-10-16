@@ -17,8 +17,8 @@ const UsuarioView = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        actions.update_usuario()
-            .then(data => {
+            const data = store.usuario ? store.usuario : JSON.parse(localStorage.getItem('user')) ;
+            console.log(data) 
                 if (data) {
                     setForm({
                         name: data.nombreCompleto || '',
@@ -29,8 +29,7 @@ const UsuarioView = () => {
                         telefono: data.telefono || ''
                     });
                 }
-            })
-            .catch(err => console.error('Error al cargar los datos del usuario:', err));
+
     }, [actions]);
 
     const handleChange = (e) => {

@@ -33,7 +33,7 @@ class Usuario(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-            "nombre_completo": self.nombre_completo,
+            "nombreCompleto": self.nombre_completo,
             "direccion": self.direccion,
             "codigo_postal": self.codigo_postal,
             "ciudad": self.ciudad,

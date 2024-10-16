@@ -44,9 +44,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.token) {
+                        console.log(data)
                         localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
                         console.log("Inicio de sesión exitoso"); 
-						setStore({usuario: data.user})
+
+                        const store = getStore();
+
+						setStore({...store, usuario: data.user})
                         if (onSuccess) onSuccess();
                     } else {
                         const errorMessage = data.error || "Error desconocido al iniciar sesión.";
@@ -61,7 +66,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             update_usuario: async () => {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -74,7 +79,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
 
                     const data = await response.json();
-                    setStore({ usuario: data });
+                    const store = getStore();
+                    setStore({ ...store, usuario: data });
                     return data;
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
@@ -135,7 +141,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
 
                     const data = await response.json();
-                    setStore({ usuario: data.usuario });
+                    const store = getStore();
+                    setStore({ ...store, usuario: data.usuario });
                     return data;
 
                 } catch (error) {
@@ -148,7 +155,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
                     if (response.ok) {
                         const data = await response.json();
-                        setStore({ productos: data.productos });
+                        const store = getStore();
+                        setStore({ ...store, productos: data.productos });
                     } else {
                         console.error("Error al obtener los productos:", response.statusText);
                     }
@@ -161,7 +169,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
                     if (response.ok) {
                         const data = await response.json();
-                        setStore({ producto: data.producto });
+                        const store = getStore();
+                        setStore({ ...store, producto: data.producto });
                     } else {
                         console.error("Error al obtener el producto:", response.statusText);
                     }
