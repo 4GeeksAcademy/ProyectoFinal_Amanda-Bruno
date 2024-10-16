@@ -7,7 +7,7 @@ const TodosProductos = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        actions.getProductos();  
+        actions.get_productos();  
     }, []); 
 
     return (

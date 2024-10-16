@@ -61,7 +61,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             update_usuario: async () => {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert('Error al actualizar los datos.');
                 }
             },
-            getProductos: async () => {
+            get_productos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
                     if (response.ok) {
@@ -140,10 +140,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                         console.error("Error al obtener los productos:", response.statusText);
                     }
                 } catch (error) {
-                    console.error("Error en getProductos:", error);
+                    console.error("Error en get_productos:", error);
                 }
             },
-            getProductoById: async (producto_id) => {
+            get_producto_by_id: async (producto_id) => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
                     if (response.ok) {
@@ -153,7 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         console.error("Error al obtener el producto:", response.statusText);
                     }
                 } catch (error) {
-                    console.error("Error en getProductoById:", error);
+                    console.error("Error en get_producto_by_id:", error);
                 }
             }         
         }

@@ -11,7 +11,7 @@ const ProductoUnitario = () => {
     const [cantidad, setCantidad] = useState(1);
     
     useEffect(() => {
-        actions.getProductoById(producto_id);
+        actions.get_producto_by_id(producto_id);
     }, [producto_id]);
 
     const producto = store.producto;
