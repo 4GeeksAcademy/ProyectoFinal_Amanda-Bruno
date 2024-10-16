@@ -96,6 +96,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
                 const error = getActions().validarPassword(form.newPassword, form.confirmNewPassword);
+
                 if (error) {
                     alert(error);
                     return;
@@ -104,10 +105,21 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const updatedUserData = {
                     ...usuario,
                     ...form,
-                    password: form.newPassword || usuario.password,
                 };
-                console.log(updatedUserData)
-                const token = sessionStorage.getItem('token');
+
+                if(form.newPassword) {
+                    updatedUserData.password = form.newPassword;
+                } else {
+                    delete updatedUserData.password;
+                }
+
+                console.log("Informacion del usuario actualizada", updatedUserData)
+
+                const token = localStorage.getItem('token');
+                if(!token) {
+                    alert("No hay un token de autenticación");
+                    return;
+                }
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
                         method: 'PUT',
@@ -119,18 +131,21 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
 
                     if (!response.ok) {
-                        throw new Error("Error al actualizar los datos");
+                        throw new Error(errorMessage, "Error al actualizar los datos");
                     }
 
                     const data = await response.json();
                     setStore({ usuario: data.usuario });
                     return data;
+
                 } catch (error) {
                     console.error('Error en la solicitud:', error);
-                    alert('Error al actualizar los datos.');
+                    alert('Error al actualizar los datos: ' + error.message);
                 }
             },
             get_productos: async () => {
+            
+            getProductos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
                     if (response.ok) {
