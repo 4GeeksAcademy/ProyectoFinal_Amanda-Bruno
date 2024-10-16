@@ -10,21 +10,21 @@ const UsuarioView = () => {
         newPassword: '',
         confirmNewPassword: '',
         direccion: store.usuario?.direccion,
-        codigoPostal: store.usuario?.codigoPostal,
+        codigo_postal: store.usuario?.codigo_postal,
         ciudad: store.usuario?.ciudad,
         telefono: store.usuario?.telefono
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        actions.getUsuarioData()
+        actions.update_usuario()
             .then(data => {
                 if (data) {
                     setForm({
                         name: data.nombreCompleto || '',
                         email: data.email || '',
                         direccion: data.direccion || '',
-                        codigoPostal: data.codigoPostal || '',
+                        codigo_postal: data.codigo_postal || '',
                         ciudad: data.ciudad || '',
                         telefono: data.telefono || ''
                     });
@@ -42,12 +42,6 @@ const UsuarioView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const error = actions.validarSenhas(form.newPassword, form.confirmNewPassword);
-        if (error) {
-            alert(error);
-            return;
-        }
 
         setIsSubmitting(true);
 
@@ -129,13 +123,13 @@ const UsuarioView = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="codigoPostal">Código Postal</label>
+                        <label htmlFor="codigo_postal">Código Postal</label>
                         <input
                             className="imput"
                             type="text"
-                            id="codigoPostal"
-                            name="codigoPostal"
-                            value={form.codigoPostal}
+                            id="codigo_postal"
+                            name="codigo_postal"
+                            value={form.codigo_postal}
                             onChange={handleChange}
                             placeholder="Tu código postal"
                         />

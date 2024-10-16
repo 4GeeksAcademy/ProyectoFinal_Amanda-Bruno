@@ -63,11 +63,11 @@ def update_usuario():
     
     if 'password' in data:
         usuario.password = generate_password_hash(data['password'])
-
+    print(usuario)
     # Actualizar los campos del usuario según los datos recibidos
     usuario.nombre_completo = data.get('nombreCompleto', usuario.nombre_completo)
     usuario.direccion = data.get('direccion', usuario.direccion)
-    usuario.codigo_postal = data.get('codigoPostal', usuario.codigo_postal)
+    usuario.codigo_postal = data.get('codigo_postal', usuario.codigo_postal)
     usuario.ciudad = data.get('ciudad', usuario.ciudad)
     usuario.telefono = data.get('telefono', usuario.telefono)
     
@@ -75,8 +75,11 @@ def update_usuario():
     return jsonify({"mensaje": "Usuario actualizado con exito"}), 200
 
 # GET Usuario
-@api.route('/usuario/<email>', methods=['GET'])
+@api.route('/usuario', methods=['GET'])
+@jwt_required()
 def get_usuario_by_email(email):
+    email=get_jwt_identity()
+    
     if not email:
         return jsonify({"error": "No se ha encontrado el email"}), 400
 

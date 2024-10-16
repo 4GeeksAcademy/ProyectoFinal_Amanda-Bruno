@@ -1,45 +1,28 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
+import { useParams } from "react-router-dom";
 import '../../styles/productoUnitario.css';
 
 const ProductoUnitario = () => {
-    const { id } = useParams();
-    const { actions } = useContext(Context);
-    const [producto, setProducto] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); 
-    const [peso, setPeso] = useState(250); // Peso predeterminado
+    const { store, actions } = useContext(Context);
+    const { producto_id } = useParams();
+    const [peso, setPeso] = useState(250);
     const [molienda, setMolienda] = useState("");
     const [cantidad, setCantidad] = useState(1);
-
+    
     useEffect(() => {
-        const fetchProducto = async () => {
-            const productoData = await actions.getProductoById(id, peso);
-            if (productoData) {
-                setProducto(productoData);
-            } else {
-                console.error("No se encontró el producto.");
-            }
-            setIsLoading(false); 
-        };
-        fetchProducto();
-    }, [id, peso, actions]); // Incluye 'peso' como dependencia para actualizar el precio si se cambia
+        actions.getProductoById(producto_id);
+    }, [producto_id]);
+
+    const producto = store.producto;
+
+    const total = producto ? producto.precio * cantidad : 0;
 
     const handleAddToCart = () => {
-        if (peso && molienda) {
-            actions.addToCart(producto.producto_id, cantidad, peso, molienda); 
-            alert(`Producto agregado: ${cantidad} unidad(es), Peso: ${peso}, Molienda: ${molienda}`);
-        } else {
-            alert("Por favor, seleccione el peso y la molienda.");
-        }
+        console.log(`Producto ${producto.nombre} agregado al carrito`);
     };
 
-    if (isLoading) return <p>Cargando...</p>; 
-    if (!producto) return <p>Producto no encontrado.</p>; 
-    
-    const total = producto.precio * cantidad;
-
-    return (
+    return producto ? (
         <div className="container">
             <div className="row">
                 <div className="col image-section">
@@ -59,13 +42,11 @@ const ProductoUnitario = () => {
 
                     <div className="form-group">
                         <label>Peso</label>
-
                         <select value={peso} onChange={(e) => setPeso(Number(e.target.value))}>
                             <option value={250}>250g</option>
                             <option value={500}>500g</option>
                             <option value={750}>750g</option>
                             <option value={1000}>1kg</option>
-
                         </select>
                     </div>
 
@@ -103,6 +84,8 @@ const ProductoUnitario = () => {
                 </div>
             </div>
         </div>
+    ) : (
+        <p>Cargando producto...</p>
     );
 };
 
