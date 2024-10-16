@@ -5,15 +5,33 @@ import '../../styles/usuarioView.css';
 const UsuarioView = () => {
     const { store, actions } = useContext(Context);
     const [form, setForm] = useState({
-        ...store.usuario,
-        newPassword: "", 
-        confirmNewPassword: "" 
+        name: store.usuario?.nombre_completo,
+        email: store.usuario?.email,
+        newPassword: '',
+        confirmNewPassword: '',
+        direccion: store.usuario?.direccion,
+        codigoPostal: store.usuario?.codigoPostal,
+        ciudad: store.usuario?.ciudad,
+        telefono: store.usuario?.telefono
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Actualiza el formulario cuando se cambian los datos del usuario en el store
     useEffect(() => {
-        setForm({ ...store.usuario, newPassword: "", confirmNewPassword: "" });
-    }, [store.usuario]);
+        actions.getUsuarioData()
+            .then(data => {
+                if (data) {
+                    setForm({
+                        name: data.nombreCompleto || '',
+                        email: data.email || '',
+                        direccion: data.direccion || '',
+                        codigoPostal: data.codigoPostal || '',
+                        ciudad: data.ciudad || '',
+                        telefono: data.telefono || ''
+                    });
+                }
+            })
+            .catch(err => console.error('Error al cargar los datos del usuario:', err));
+    }, [actions]);
 
     const handleChange = (e) => {
         setForm({
@@ -24,18 +42,36 @@ const UsuarioView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        actions.submitUsuario(form); // Llama a la acción para guardar los cambios
+
+        const error = actions.validarSenhas(form.newPassword, form.confirmNewPassword);
+        if (error) {
+            alert(error);
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        actions.submitUsuario(form)
+            .then(() => {
+                alert("Los datos han sido actualizados.");
+            })
+            .catch((error) => {
+                console.error('Error en la solicitud:', error);
+                alert('Error al actualizar los datos.');
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
-    
+
     return (
-        <div className="vista"> 
+        <div className="vista">
             <div className="campo">
                 <h1 className="titulo"><strong>Editar tu perfil</strong></h1>
                 <form className="edit-form" onSubmit={handleSubmit}>
-                    {/* Campos del formulario */}
+
                     <div className="form-group">
                         <label htmlFor="name">Nombre completo</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
@@ -47,7 +83,6 @@ const UsuarioView = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="email"
@@ -59,7 +94,6 @@ const UsuarioView = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="newPassword">Nueva Contraseña</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -71,7 +105,6 @@ const UsuarioView = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="password"
@@ -82,49 +115,58 @@ const UsuarioView = () => {
                             placeholder="Confirma tu nueva contraseña"
                         />
                     </div>
-                    {/* Campos adicionales */}
+     
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
                             id="direccion"
                             name="direccion"
-                            value={form.direccion || ""}
+                            value={form.direccion}
                             onChange={handleChange}
                             placeholder="Calle, número, bloque, puerta"
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="codigoPostal">Código Postal</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
                             id="codigoPostal"
                             name="codigoPostal"
-                            value={form.codigoPostal || ""}
+                            value={form.codigoPostal}
                             onChange={handleChange}
                             placeholder="Tu código postal"
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="ciudad">Ciudad</label>
-                        <br></br>
                         <input
                             className="imput"
                             type="text"
                             id="ciudad"
                             name="ciudad"
-                            value={form.ciudad || ""}
+                            value={form.ciudad}
                             onChange={handleChange}
                             placeholder="Tu ciudad"
                         />
                     </div>
-                    <br></br>
-                    <br></br>
-                    <button type="submit" className="guardar btn-submit">Guardar los cambios</button>
+                    <div className="form-group">
+                        <label htmlFor="telefono">Teléfono</label>
+                        <input
+                            className="imput"
+                            type="text"
+                            id="telefono"
+                            name="telefono"
+                            value={form.telefono}
+                            onChange={handleChange}
+                            placeholder="Tu número de teléfono"
+                        />
+                    </div>
+                    <button type="submit" className="guardar btn-submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Guardando..." : "Guardar los cambios"}
+                    </button>
                 </form>
             </div>
         </div>
