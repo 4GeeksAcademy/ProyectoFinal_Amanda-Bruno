@@ -33,7 +33,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
         setIsAuthenticated(false);
         navigate('/');
     };
