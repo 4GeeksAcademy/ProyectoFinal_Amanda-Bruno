@@ -74,7 +74,8 @@ def update_usuario():
     return jsonify({"mensaje": "Usuario actualizado con exito"}), 200
 
 # GET Usuario
-@api.route('/usuario/<email>', methods=['GET'])
+@api.route('/usuario', methods=['GET'])
+@jwt_required()
 def get_usuario_by_email(email):
     if not email:
         return jsonify({"error": "No se ha encontrado el email"}), 400

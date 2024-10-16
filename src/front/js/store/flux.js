@@ -5,7 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 name: "",
                 email: "",
                 direccion: "",
-				codigoPostal: "",
+				codigo_postal: "",
                 ciudad: "",
             },
 			cafe: [
