@@ -57,9 +57,6 @@ def update_usuario():
 
     if not usuario:
         return jsonify({"error": "El usuario no ha sido encontrado"}), 404
-
-    if 'email' in data:
-        usuario.email = data['email']
     
     if 'password' in data:
         usuario.password = generate_password_hash(data['password'])
@@ -72,7 +69,7 @@ def update_usuario():
     usuario.telefono = data.get('telefono', usuario.telefono)
     
     db.session.commit()
-    return jsonify({"mensaje": "Usuario actualizado con exito"}), 200
+    return jsonify({"mensaje": "Usuario actualizado con exito", "usuario": usuario.serialize()}), 200
 
 # GET Usuario
 @api.route('/usuario', methods=['GET'])

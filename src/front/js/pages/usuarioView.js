@@ -17,7 +17,7 @@ const UsuarioView = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-            const data = store.usuario ? store.usuario : JSON.parse(localStorage.getItem('user')) ;
+            const data = store.usuario ? store.usuario : JSON.parse(sessionStorage.getItem('user')) ;
             console.log(data) 
                 if (data) {
                     setForm({
@@ -30,7 +30,7 @@ const UsuarioView = () => {
                     });
                 }
 
-    }, [actions]);
+    }, [store.usuario]);
 
     const handleChange = (e) => {
         setForm({
