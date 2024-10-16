@@ -144,8 +144,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
             get_productos: async () => {
-            
-            getProductos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
                     if (response.ok) {
