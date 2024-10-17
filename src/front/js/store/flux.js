@@ -153,6 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             get_productos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
+                    console.log(response);
                     if (response.ok) {
                         const data = await response.json();
                         const store = getStore();

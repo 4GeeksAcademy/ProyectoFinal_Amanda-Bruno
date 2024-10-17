@@ -39,7 +39,7 @@ const Layout = () => {
                     <Route path="/privacidad" element={<Privacidad />} />
                     <Route path="/envios" element={<Envios />} />
                     <Route path="/devoluciones" element={<Devoluciones />} />
-                    <Route path="/producto/:id" element={<ProductoUnitario />} />
+                    <Route path="/producto/:producto_id" element={<ProductoUnitario />} />
                     <Route path="/todosProductos" element={<TodosProductos />} />
                     <Route path="/usuarioView" element={<UsuarioView />} />
                     <Route path="/loginView" element={<LoginView />} />
