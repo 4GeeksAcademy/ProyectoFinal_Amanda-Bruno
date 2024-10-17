@@ -17,12 +17,11 @@ const UsuarioView = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-            const data = store.usuario ? store.usuario : JSON.parse(localStorage.getItem('user')) ;
+            const data = store.usuario ? store.usuario : JSON.parse(sessionStorage.getItem('user')) ;
             console.log(data) 
                 if (data) {
                     setForm({
                         name: data.nombreCompleto || '',
-                        email: data.email || '',
                         direccion: data.direccion || '',
                         codigo_postal: data.codigo_postal || '',
                         ciudad: data.ciudad || '',
@@ -30,7 +29,7 @@ const UsuarioView = () => {
                     });
                 }
 
-    }, [actions]);
+    }, [store.usuario]);
 
     const handleChange = (e) => {
         setForm({
@@ -74,41 +73,6 @@ const UsuarioView = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            className="imput"
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
-                            readOnly
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="newPassword">Nueva Contraseña</label>
-                        <input
-                            className="imput"
-                            type="password"
-                            id="newPassword"
-                            name="newPassword"
-                            value={form.newPassword}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
-                        <input
-                            className="imput"
-                            type="password"
-                            id="confirmNewPassword"
-                            name="confirmNewPassword"
-                            value={form.confirmNewPassword}
-                            onChange={handleChange}
-                            placeholder="Confirma tu nueva contraseña"
-                        />
-                    </div>
-     
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
                         <input
@@ -157,9 +121,34 @@ const UsuarioView = () => {
                             placeholder="Tu número de teléfono"
                         />
                     </div>
+                    <div className="form-group">
+                        <label htmlFor="newPassword">Nueva Contraseña</label>
+                        <input
+                            className="imput"
+                            type="password"
+                            id="newPassword"
+                            name="newPassword"
+                            value={form.newPassword}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                        <input
+                            className="imput"
+                            type="password"
+                            id="confirmNewPassword"
+                            name="confirmNewPassword"
+                            value={form.confirmNewPassword}
+                            onChange={handleChange}
+                            placeholder="Confirma tu nueva contraseña"
+                        />
+                    </div>
+     
                     <button type="submit" className="guardar btn-submit" disabled={isSubmitting}>
                         {isSubmitting ? "Guardando..." : "Guardar los cambios"}
                     </button>
+                    
                 </form>
             </div>
         </div>

@@ -54,7 +54,7 @@ const ProductoUnitario = () => {
                         <label>Molienda</label>
                         <select value={molienda} onChange={(e) => setMolienda(e.target.value)}>
                             <option value="">Seleccione</option>
-                            {producto.opcion_molido?.tipos.map((opcion) => (
+                            {producto.opcion_molido?.tipos?.map((opcion) => (
                                 <option key={opcion} value={opcion}>{opcion}</option>
                             ))}
                         </select>

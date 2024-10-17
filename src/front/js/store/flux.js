@@ -45,8 +45,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .then(data => {
                     if (data.token) {
                         console.log(data)
-                        localStorage.setItem('token', data.token);
-                        localStorage.setItem('user', JSON.stringify(data.user));
+                        sessionStorage.setItem('token', data.token);
+                        sessionStorage.setItem('user', JSON.stringify(data.user));
                         console.log("Inicio de sesión exitoso"); 
 
                         const store = getStore();
@@ -64,7 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             update_usuario: async () => {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
                         method: 'PUT',
@@ -121,7 +121,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 console.log("Informacion del usuario actualizada", updatedUserData)
 
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 if(!token) {
                     alert("No hay un token de autenticación");
                     return;
@@ -153,6 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             get_productos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
+                    console.log(response);
                     if (response.ok) {
                         const data = await response.json();
                         const store = getStore();

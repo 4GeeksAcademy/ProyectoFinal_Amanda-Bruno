@@ -13,9 +13,9 @@ const TodosProductos = () => {
     return (
         <div className="product-container">
             {store.productos?.map((cafe) => (
-                <div className="product-card" key={cafe.producto_id}>
+                <div className="product-card" key={cafe.id}>
                     <img src={cafe.imagen_url} alt={cafe.nombre} className="product-image" />
-                    <Link to={`/producto/${cafe.producto_id}`} className="product-name">
+                    <Link to={`/producto/${cafe.id}`} className="product-name">
                         {cafe.nombre}
                     </Link>
                     <p className="product-origin">Origen: {cafe.region}</p>

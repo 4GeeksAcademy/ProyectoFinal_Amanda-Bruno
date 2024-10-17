@@ -33,7 +33,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         setIsAuthenticated(false);
         navigate('/');
     };
@@ -84,7 +84,7 @@ const Navbar = () => {
                     </div>
 
                         <div className="dropdown">
-                            {localStorage.getItem('token') ? (
+                            {sessionStorage.getItem('token') ? (
                                 <div className="dropdown">
                                     <button className="btn login-btn">
                                         <FontAwesomeIcon icon={faUser} /> Mi Cuenta
