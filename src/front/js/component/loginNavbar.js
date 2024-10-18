@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import { Context } from "../store/appContext";
 import '../../styles/loginNavbar.css';
 
@@ -7,6 +8,7 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); 
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,6 +24,11 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
                 setError(errorMessage);
             }
         );
+    };
+
+    const handleNavigateToSignup = () => {
+        handleCloseModal(); 
+        navigate("/registrar"); 
     };
 
     return (
@@ -54,7 +61,7 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
                             <input 
                                 type="password" 
                                 id="password" 
-                                name="password" 
+                                name="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} 
                                 required 
@@ -62,6 +69,19 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
                             <button type="submit" className="btn btn-custom mt-3" style={{ color: '#4B2E0F' }}>
                                 Iniciar sesión
                             </button>
+
+                            <p className="mt-3">
+                                Si no eres usuario y quieres registrarte,{" "}
+                                <br></br>
+                                <div className="span">
+                                <span 
+                                    style={{ cursor: "pointer", color: "#4B2E0F" }} 
+                                    onClick={handleNavigateToSignup}
+                                >
+                                    clica aquí.
+                                </span>
+                                </div>
+                            </p>
                         </form>
                     </div>
                 </div>

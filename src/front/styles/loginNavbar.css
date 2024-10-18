@@ -43,3 +43,12 @@ input {
 .modal-header {
     color: #d4b89a;
 }
+p {
+    text-align: center;
+}
+.span {
+    text-align: center;
+}
+span:hover {
+        background-color: #c0a586;
+}

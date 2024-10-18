@@ -89,8 +89,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       
             validarPassword: (newPassword, confirmNewPassword) => {
 				if (newPassword || confirmNewPassword) {
-					if (newPassword.length < 6) {
-						return "La contraseña debe tener al menos 6 caracteres.";
+					if (newPassword.length < 8) {
+						return "La contraseña debe tener al menos 8 caracteres.";
 					}
 					if (newPassword !== confirmNewPassword) {
 						return "Las contraseñas no coinciden.";
