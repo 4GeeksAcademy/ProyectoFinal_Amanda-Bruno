@@ -107,18 +107,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert(error);
                     return;
                 }
-
                 const updatedUserData = {
-                    ...usuario,
-                    ...form,
+                    ...form
                 };
-
                 if(form.newPassword) {
                     updatedUserData.password = form.newPassword;
                 } else {
                     delete updatedUserData.password;
                 }
-
                 console.log("Informacion del usuario actualizada", updatedUserData)
 
                 const token = sessionStorage.getItem('token');
@@ -135,14 +131,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                         },
                         body: JSON.stringify(updatedUserData)
                     });
-
                     if (!response.ok) {
                         throw new Error(errorMessage, "Error al actualizar los datos");
                     }
 
                     const data = await response.json();
                     const store = getStore();
-                    setStore({ ...store, usuario: data.usuario });
+                    console.log(updatedUserData)
+                    setStore({ ...store, usuario: updatedUserData });
+                    sessionStorage.setItem('user', JSON.stringify(updatedUserData))
                     return data;
 
                 } catch (error) {
@@ -177,6 +174,26 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 } catch (error) {
                     console.error("Error en get_producto_by_id:", error);
+                }
+            },
+            getUsuario: async () => {
+                const token = sessionStorage.getItem('token');
+                try {
+                    const response = await fetch (`${process.env.BACKEND_URL}/api/usuario`, {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }})
+                    if (!response.ok){
+                        return (
+                            {"error": "Usuario no autenticado"}
+                        )}
+                    else {
+                       const data = await response.json()
+                       return(data)
+                    }
+                } catch(error) {
+                    console.log(error)
                 }
             }         
         }

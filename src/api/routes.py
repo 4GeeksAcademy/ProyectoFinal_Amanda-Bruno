@@ -62,7 +62,7 @@ def update_usuario():
         usuario.password = generate_password_hash(data['password'])
     print(usuario)
     # Actualizar los campos del usuario según los datos recibidos
-    usuario.nombre_completo = data.get('nombreCompleto', usuario.nombre_completo)
+    usuario.nombre_completo = data.get('nombre_completo', usuario.nombre_completo)
     usuario.direccion = data.get('direccion', usuario.direccion)
     usuario.codigo_postal = data.get('codigo_postal', usuario.codigo_postal)
     usuario.ciudad = data.get('ciudad', usuario.ciudad)
