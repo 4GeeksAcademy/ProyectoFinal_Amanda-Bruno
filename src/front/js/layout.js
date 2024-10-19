@@ -14,9 +14,11 @@ import Privacidad from "./pages/privacidad";
 import Envios from "./pages/envios";
 import Devoluciones from "./pages/devoluciones";
 import ProductoUnitario from "./pages/productoUnitario";
-import TodosProductos from "./pages/todosProductos";
 import UsuarioView from "./pages/usuarioView";
 import LoginView from "./pages/loginView";
+import PesosProductos from "./pages/pesosProductos";
+import { ProductoPorPeso } from "./pages/productoPorPeso";
+
  
 //create your first component
 const Layout = () => {
@@ -40,9 +42,10 @@ const Layout = () => {
                     <Route path="/envios" element={<Envios />} />
                     <Route path="/devoluciones" element={<Devoluciones />} />
                     <Route path="/producto/:producto_id" element={<ProductoUnitario />} />
-                    <Route path="/todosProductos" element={<TodosProductos />} />
                     <Route path="/usuarioView" element={<UsuarioView />} />
                     <Route path="/loginView" element={<LoginView />} />
+                    <Route path="/pesosProductos" element={<PesosProductos />} />
+                    <Route path="/productoPorPeso/:peso" element={<ProductoPorPeso />} />
                     <Route element={<h1>Not found!</h1>} />
                 </Routes>
                 <Footer />

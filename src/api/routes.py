@@ -382,3 +382,9 @@ def checkout():
         print(f"Un error a ocurrido en el chackout: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+# producto por peso
+@api.route("/productoPorPeso/<int:peso>", methods=["GET"])
+def obtenerProductoPorPeso(peso):
+    productos = Producto.query.filter_by(peso=peso).all()
+    productos_serializados = [producto.serialize() for producto in productos]
+    return jsonify(productos_serializados)

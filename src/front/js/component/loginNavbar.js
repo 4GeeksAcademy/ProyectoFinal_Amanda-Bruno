@@ -70,7 +70,7 @@ const LoginNavbar = ({ handleCloseModal, setIsAuthenticated }) => {
                                 Iniciar sesión
                             </button>
 
-                            <p className="mt-3">
+                            <p className="regi mt-3">
                                 Si no eres usuario y quieres registrarte,{" "}
                                 <br></br>
                                 <div className="span">

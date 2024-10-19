@@ -63,7 +63,7 @@ const Navbar = () => {
                     </div>
 
                     <div className="dropdown">
-                        <Link to="/todosProductos" className="btn productos-btn">
+                        <Link to="/pesosProductos" className="btn productos-btn">
                             <FontAwesomeIcon icon={faCoffee} /> Productos
                         </Link>
                     </div>
