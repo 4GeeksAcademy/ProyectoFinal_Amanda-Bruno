@@ -12,7 +12,7 @@ import stripe
 import datetime
 
 api = Blueprint('api', __name__)
-stripe.api_key = 'sk_test_51Q2r2N06zQfFcColuDlGYU5ASql5Q9fsnjKX4vzwx8GFlbZTKVCXexfKbvEkqde8LObURT21VGVn4heuu7DM1LLt00oVGSM3Zl'
+stripe.api_key = 'sk_test_51QAvoQK7BJC5w4F5ForFM6XfFwoYLLhx3TGsxm90yV6xaJP1F6XBl52emb9zX0fcEs97qCvgM9KR285f2AadzJIL00KJ6NHoIO'
 
 # Allow CORS requests to this API
 CORS(api)
@@ -62,7 +62,7 @@ def update_usuario():
         usuario.password = generate_password_hash(data['password'])
     print(usuario)
     # Actualizar los campos del usuario según los datos recibidos
-    usuario.nombre_completo = data.get('nombreCompleto', usuario.nombre_completo)
+    usuario.nombre_completo = data.get('nombre_completo', usuario.nombre_completo)
     usuario.direccion = data.get('direccion', usuario.direccion)
     usuario.codigo_postal = data.get('codigo_postal', usuario.codigo_postal)
     usuario.ciudad = data.get('ciudad', usuario.ciudad)
@@ -382,3 +382,9 @@ def checkout():
         print(f"Un error a ocurrido en el chackout: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+# producto por peso
+@api.route("/productoPorPeso/<int:peso>", methods=["GET"])
+def obtenerProductoPorPeso(peso):
+    productos = Producto.query.filter_by(peso=peso).all()
+    productos_serializados = [producto.serialize() for producto in productos]
+    return jsonify(productos_serializados)

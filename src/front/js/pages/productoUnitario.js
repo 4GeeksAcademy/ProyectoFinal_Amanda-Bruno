@@ -29,7 +29,7 @@ const ProductoUnitario = () => {
                     <img
                         src={producto.imagen_url}
                         alt={producto.nombre}
-                        className="product-image"
+                        className="producto-image"
                     />
                     <h3>{producto.nombre}</h3>
                     <p>{producto.region}</p>
@@ -39,16 +39,6 @@ const ProductoUnitario = () => {
                 <div className="col details-section">
                     <h5>Descripción</h5>
                     <p className="description">{producto.descripcion}</p>
-
-                    <div className="form-group">
-                        <label>Peso</label>
-                        <select value={peso} onChange={(e) => setPeso(Number(e.target.value))}>
-                            <option value={250}>250g</option>
-                            <option value={500}>500g</option>
-                            <option value={750}>750g</option>
-                            <option value={1000}>1kg</option>
-                        </select>
-                    </div>
 
                     <div className="form-group">
                         <label>Molienda</label>

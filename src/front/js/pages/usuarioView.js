@@ -5,7 +5,7 @@ import '../../styles/usuarioView.css';
 const UsuarioView = () => {
     const { store, actions } = useContext(Context);
     const [form, setForm] = useState({
-        name: store.usuario?.nombre_completo,
+        nombre_completo: store.usuario?.nombre_completo,
         email: store.usuario?.email,
         newPassword: '',
         confirmNewPassword: '',
@@ -15,13 +15,15 @@ const UsuarioView = () => {
         telefono: store.usuario?.telefono
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    useEffect(() =>{
+        console.log(store.usuario)
+    },[store.usuario])
     useEffect(() => {
-            const data = store.usuario ? store.usuario : JSON.parse(sessionStorage.getItem('user')) ;
+            const data = store.usuario.lenght > 0 ? store.usuario : JSON.parse(sessionStorage.getItem('user')) ;
             console.log(data) 
                 if (data) {
                     setForm({
-                        name: data.nombreCompleto || '',
+                        nombre_completo: data.nombre_completo || '',
                         direccion: data.direccion || '',
                         codigo_postal: data.codigo_postal || '',
                         ciudad: data.ciudad || '',
@@ -63,13 +65,13 @@ const UsuarioView = () => {
                 <form className="edit-form" onSubmit={handleSubmit}>
 
                     <div className="form-group">
-                        <label htmlFor="name">Nombre completo</label>
+                        <label htmlFor="nombre_completo">Nombre completo</label>
                         <input
                             className="imput"
                             type="text"
                             id="name"
-                            name="name"
-                            value={form.name}
+                            name="nombre_completo"
+                            value={form.nombre_completo}
                             onChange={handleChange}
                         />
                     </div>
