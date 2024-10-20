@@ -85,19 +85,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
                 }
-            },
-      
-            validarPassword: (newPassword, confirmNewPassword) => {
-				if (newPassword || confirmNewPassword) {
-					if (newPassword.length < 8) {
-						return "La contraseña debe tener al menos 8 caracteres.";
-					}
-					if (newPassword !== confirmNewPassword) {
-						return "Las contraseñas no coinciden.";
-					}
-				}
-				return null; 
-			},			
+            },                  
          
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
@@ -195,7 +183,22 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch(error) {
                     console.log(error)
                 }
-            }         
+            },
+            
+            getProductosPorPais: async (country) => {
+                try {
+                    const response = await fetch(`/api/productoPorPais/${country}`);
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        setStore({ productos: data });
+                    } else {
+                        console.error("Error al obtener productos:", data.error);
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con la API:", error);
+                }
+            }
         }
     };
 };

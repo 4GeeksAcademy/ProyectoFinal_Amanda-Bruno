@@ -45,26 +45,11 @@
  
 }
 
-  .slider-controler .swiper-button-prev,
-.slider-controler .swiper-button-next {
- 
-  background: var(--white);
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ac9766;
-}
-
-.slider-controler .swiper-button-next {
-  right: -970px;
-  padding-bottom: 50px;
-}
-
-.slider-controler .swiper-button-prev {
-  padding-bottom: 50px;
+.swiper-button-next,
+.swiper-button-prev {
+  color: #d4b89a;
+  text-shadow: 0 0 10px #d4b89a;
+  box-shadow: 0 0 20px rgba(172, 151, 102, 0.883); 
 }
 
 .slide-content {
@@ -83,7 +68,7 @@
   bottom: 25px;
   width: 100%;
   padding: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.434);
+  background-color: rgba(0, 0, 0, 0.163);
   color: white;
   text-align: center;
   border-radius: 0 0 1rem 1rem;
