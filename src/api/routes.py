@@ -388,3 +388,15 @@ def obtenerProductoPorPeso(peso):
     productos = Producto.query.filter_by(peso=peso).all()
     productos_serializados = [producto.serialize() for producto in productos]
     return jsonify(productos_serializados)
+
+# productos filtrados por país y sus variaciones de peso
+@api.route("/productoPorPais/<string:country>", methods=["GET"])
+def obtenerProductosPorPais(country):
+
+    productos = Producto.query.filter_by(region=country).all()
+    
+    if not productos:
+        return jsonify({"error": f"No se encontraron productos para {country}"}), 404
+    productos_serializados = [producto.serialize() for producto in productos]
+
+    return jsonify(productos_serializados), 200
