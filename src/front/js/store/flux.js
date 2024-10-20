@@ -88,16 +88,20 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
       
             validarPassword: (newPassword, confirmNewPassword) => {
-				if (newPassword || confirmNewPassword) {
-					if (newPassword.length < 8) {
-						return "La contraseña debe tener al menos 8 caracteres.";
-					}
-					if (newPassword !== confirmNewPassword) {
-						return "Las contraseñas no coinciden.";
-					}
-				}
-				return null; 
-			},			
+                if (newPassword || confirmNewPassword) {
+                    if (newPassword.length < 8) {
+                        return "La contraseña debe tener al menos 8 caracteres.";
+                    }
+                    const regexMayuscula = /[A-Z]/;
+                    if (!regexMayuscula.test(newPassword)) {
+                        return "La contraseña debe contener al menos una letra mayúscula.";
+                    }
+                    if (newPassword !== confirmNewPassword) {
+                        return "Las contraseñas no coinciden.";
+                    }
+                }
+                return null;
+            },                        
          
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
