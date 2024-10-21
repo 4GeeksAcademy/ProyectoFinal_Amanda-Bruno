@@ -169,7 +169,47 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("Error en getProductoById:", error);
                 }
-            }         
+            },
+            fetchCartItems: async () => {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${process.env.BACKEND_URL}/api/cart`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                setStore({ cartItems: data, loading: false });
+            },
+            updateItemQuantity: async (id, newQuantity) => {
+                const response = await fetch(`${process.env.BACKEND_URL}/api/carrito/agregar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ producto_id: id, cantidad: newQuantity })
+                });
+            
+                if (response.ok) {
+                    actions.fetchCartItems();  
+                }
+            },
+            handleCheckout: (cartItems) => {
+                const token = localStorage.getItem('token');
+                
+                fetch(`${process.env.BACKEND_URL}/api/checkout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ items: cartItems })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        window.location.href = `https://checkout.stripe.com/pay/${data.id}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+            }
         }
     };
 };
