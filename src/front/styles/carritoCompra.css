@@ -18,6 +18,15 @@
     margin-bottom: 30px;
 }
 
+.empty-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px; 
+    text-align: center;
+}
+
 .item-details h3 {
     margin: 0;
     font-size: 18px;
