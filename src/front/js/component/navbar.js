@@ -33,7 +33,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         setIsAuthenticated(false);
         navigate('/');
     };
@@ -56,17 +56,17 @@ const Navbar = () => {
                 <div className={`navbar-content ${isMenuOpen ? 'active d-lg-block' : 'd-none d-lg-block'}`} id="navbar-content">
 
                     <div className="navbar-right">
-                    <div className="dropdown">
-                        <Link to="/quienSomos" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faShop} /> Nuestro café
-                        </Link>
-                    </div>
+                        <div className="dropdown">
+                            <Link to="/quienSomos" className="btn productos-btn">
+                                <FontAwesomeIcon icon={faShop} /> Nuestro café
+                            </Link>
+                        </div>
 
-                    <div className="dropdown">
-                        <Link to="/todosProductos" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faCoffee} /> Productos
-                        </Link>
-                    </div>
+                        <div className="dropdown">
+                            <Link to="/pesosProductos" className="btn productos-btn">
+                                <FontAwesomeIcon icon={faCoffee} /> Productos
+                            </Link>
+                        </div>
 
                         <div className="dropdown">
                             <Link to="/carritoCompra" className="btn cart-btn">
@@ -77,14 +77,16 @@ const Navbar = () => {
                             </div>
                         </div>
 
-                        <div className="dropdown">
-                        <Link to="/registrar" className="btn productos-btn">
-                            <FontAwesomeIcon icon={faAddressCard} /> Registrar
-                        </Link>
-                    </div>
+                        {!isAuthenticated && (
+                            <div className="dropdown">
+                                <Link to="/registrar" className="btn productos-btn">
+                                    <FontAwesomeIcon icon={faAddressCard} /> Registrar
+                                </Link>
+                            </div>
+                        )}
 
                         <div className="dropdown">
-                            {localStorage.getItem('token') ? (
+                            {isAuthenticated ? (
                                 <div className="dropdown">
                                     <button className="btn login-btn">
                                         <FontAwesomeIcon icon={faUser} /> Mi Cuenta

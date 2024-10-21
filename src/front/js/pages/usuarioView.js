@@ -5,7 +5,7 @@ import '../../styles/usuarioView.css';
 const UsuarioView = () => {
     const { store, actions } = useContext(Context);
     const [form, setForm] = useState({
-        name: store.usuario?.nombre_completo,
+        nombre_completo: store.usuario?.nombre_completo,
         email: store.usuario?.email,
         newPassword: '',
         confirmNewPassword: '',
@@ -15,23 +15,23 @@ const UsuarioView = () => {
         telefono: store.usuario?.telefono
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    useEffect(() =>{
+        console.log(store.usuario)
+    },[store.usuario])
     useEffect(() => {
-        actions.update_usuario()
-            .then(data => {
+            const data = store.usuario.lenght > 0 ? store.usuario : JSON.parse(sessionStorage.getItem('user')) ;
+            console.log(data) 
                 if (data) {
                     setForm({
-                        name: data.nombreCompleto || '',
-                        email: data.email || '',
+                        nombre_completo: data.nombre_completo || '',
                         direccion: data.direccion || '',
                         codigo_postal: data.codigo_postal || '',
                         ciudad: data.ciudad || '',
                         telefono: data.telefono || ''
                     });
                 }
-            })
-            .catch(err => console.error('Error al cargar los datos del usuario:', err));
-    }, [actions]);
+
+    }, [store.usuario]);
 
     const handleChange = (e) => {
         setForm({
@@ -65,51 +65,16 @@ const UsuarioView = () => {
                 <form className="edit-form" onSubmit={handleSubmit}>
 
                     <div className="form-group">
-                        <label htmlFor="name">Nombre completo</label>
+                        <label htmlFor="nombre_completo">Nombre completo</label>
                         <input
                             className="imput"
                             type="text"
                             id="name"
-                            name="name"
-                            value={form.name}
+                            name="nombre_completo"
+                            value={form.nombre_completo}
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            className="imput"
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
-                            readOnly
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="newPassword">Nueva Contraseña</label>
-                        <input
-                            className="imput"
-                            type="password"
-                            id="newPassword"
-                            name="newPassword"
-                            value={form.newPassword}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
-                        <input
-                            className="imput"
-                            type="password"
-                            id="confirmNewPassword"
-                            name="confirmNewPassword"
-                            value={form.confirmNewPassword}
-                            onChange={handleChange}
-                            placeholder="Confirma tu nueva contraseña"
-                        />
-                    </div>
-     
                     <div className="form-group">
                         <label htmlFor="direccion">Dirección</label>
                         <input
@@ -158,9 +123,34 @@ const UsuarioView = () => {
                             placeholder="Tu número de teléfono"
                         />
                     </div>
+                    <div className="form-group">
+                        <label htmlFor="newPassword">Nueva Contraseña</label>
+                        <input
+                            className="imput"
+                            type="password"
+                            id="newPassword"
+                            name="newPassword"
+                            value={form.newPassword}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                        <input
+                            className="imput"
+                            type="password"
+                            id="confirmNewPassword"
+                            name="confirmNewPassword"
+                            value={form.confirmNewPassword}
+                            onChange={handleChange}
+                            placeholder="Confirma tu nueva contraseña"
+                        />
+                    </div>
+     
                     <button type="submit" className="guardar btn-submit" disabled={isSubmitting}>
                         {isSubmitting ? "Guardando..." : "Guardar los cambios"}
                     </button>
+                    
                 </form>
             </div>
         </div>

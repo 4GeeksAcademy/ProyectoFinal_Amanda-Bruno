@@ -44,9 +44,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.token) {
-                        localStorage.setItem('token', data.token);
+                        console.log(data)
+                        sessionStorage.setItem('token', data.token);
+                        sessionStorage.setItem('user', JSON.stringify(data.user));
                         console.log("Inicio de sesión exitoso"); 
-						setStore({usuario: data.user})
+
+                        const store = getStore();
+
+						setStore({...store, usuario: data.user})
                         if (onSuccess) onSuccess();
                     } else {
                         const errorMessage = data.error || "Error desconocido al iniciar sesión.";
@@ -59,7 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             update_usuario: async () => {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/usuario/update`, {
                         method: 'PUT',
@@ -74,24 +79,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
 
                     const data = await response.json();
-                    setStore({ usuario: data });
+                    const store = getStore();
+                    setStore({ ...store, usuario: data });
                     return data;
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
                 }
-            },
-      
-            validarPassword: (newPassword, confirmNewPassword) => {
-				if (newPassword || confirmNewPassword) {
-					if (newPassword.length < 6) {
-						return "La contraseña debe tener al menos 6 caracteres.";
-					}
-					if (newPassword !== confirmNewPassword) {
-						return "Las contraseñas no coinciden.";
-					}
-				}
-				return null; 
-			},			
+            },                  
          
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
@@ -101,21 +95,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert(error);
                     return;
                 }
-
                 const updatedUserData = {
-                    ...usuario,
-                    ...form,
+                    ...form
                 };
-
                 if(form.newPassword) {
                     updatedUserData.password = form.newPassword;
                 } else {
                     delete updatedUserData.password;
                 }
-
                 console.log("Informacion del usuario actualizada", updatedUserData)
 
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 if(!token) {
                     alert("No hay un token de autenticación");
                     return;
@@ -129,13 +119,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                         },
                         body: JSON.stringify(updatedUserData)
                     });
-
                     if (!response.ok) {
                         throw new Error(errorMessage, "Error al actualizar los datos");
                     }
 
                     const data = await response.json();
-                    setStore({ usuario: data.usuario });
+                    const store = getStore();
+                    console.log(updatedUserData)
+                    setStore({ ...store, usuario: updatedUserData });
+                    sessionStorage.setItem('user', JSON.stringify(updatedUserData))
                     return data;
 
                 } catch (error) {
@@ -143,72 +135,69 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert('Error al actualizar los datos: ' + error.message);
                 }
             },
-            
-            getProductos: async () => {
+            get_productos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
+                    console.log(response);
                     if (response.ok) {
                         const data = await response.json();
-                        setStore({ productos: data.productos });
+                        const store = getStore();
+                        setStore({ ...store, productos: data.productos });
                     } else {
                         console.error("Error al obtener los productos:", response.statusText);
                     }
                 } catch (error) {
-                    console.error("Error en getProductos:", error);
+                    console.error("Error en get_productos:", error);
                 }
             },
-            getProductoById: async (producto_id) => {
+            get_producto_by_id: async (producto_id) => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
                     if (response.ok) {
                         const data = await response.json();
-                        setStore({ producto: data.producto });
+                        const store = getStore();
+                        setStore({ ...store, producto: data.producto });
                     } else {
                         console.error("Error al obtener el producto:", response.statusText);
                     }
                 } catch (error) {
-                    console.error("Error en getProductoById:", error);
+                    console.error("Error en get_producto_by_id:", error);
                 }
             },
-            fetchCartItems: async () => {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${process.env.BACKEND_URL}/api/cart`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await response.json();
-                setStore({ cartItems: data, loading: false });
-            },
-            updateItemQuantity: async (id, newQuantity) => {
-                const response = await fetch(`${process.env.BACKEND_URL}/api/carrito/agregar`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ producto_id: id, cantidad: newQuantity })
-                });
-            
-                if (response.ok) {
-                    actions.fetchCartItems();  
-                }
-            },
-            handleCheckout: (cartItems) => {
-                const token = localStorage.getItem('token');
-                
-                fetch(`${process.env.BACKEND_URL}/api/checkout`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ items: cartItems })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.id) {
-                        window.location.href = `https://checkout.stripe.com/pay/${data.id}`;
+            getUsuario: async () => {
+                const token = sessionStorage.getItem('token');
+                try {
+                    const response = await fetch (`${process.env.BACKEND_URL}/api/usuario`, {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }})
+                    if (!response.ok){
+                        return (
+                            {"error": "Usuario no autenticado"}
+                        )}
+                    else {
+                       const data = await response.json()
+                       return(data)
                     }
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                });
+                } catch(error) {
+                    console.log(error)
+                }
+            },
+            
+            getProductosPorPais: async (country) => {
+                try {
+                    const response = await fetch(`/api/productoPorPais/${country}`);
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        setStore({ productos: data });
+                    } else {
+                        console.error("Error al obtener productos:", data.error);
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con la API:", error);
+                }
             }
         }
     };

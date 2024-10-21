@@ -12,7 +12,7 @@ import stripe
 import datetime
 
 api = Blueprint('api', __name__)
-stripe.api_key = 'sk_test_51Q2r2N06zQfFcColuDlGYU5ASql5Q9fsnjKX4vzwx8GFlbZTKVCXexfKbvEkqde8LObURT21VGVn4heuu7DM1LLt00oVGSM3Zl'
+stripe.api_key = 'sk_test_51QAvoQK7BJC5w4F5ForFM6XfFwoYLLhx3TGsxm90yV6xaJP1F6XBl52emb9zX0fcEs97qCvgM9KR285f2AadzJIL00KJ6NHoIO'
 
 # Allow CORS requests to this API
 CORS(api)
@@ -57,22 +57,19 @@ def update_usuario():
 
     if not usuario:
         return jsonify({"error": "El usuario no ha sido encontrado"}), 404
-
-    if 'email' in data:
-        usuario.email = data['email']
     
     if 'password' in data:
         usuario.password = generate_password_hash(data['password'])
     print(usuario)
     # Actualizar los campos del usuario según los datos recibidos
-    usuario.nombre_completo = data.get('nombreCompleto', usuario.nombre_completo)
+    usuario.nombre_completo = data.get('nombre_completo', usuario.nombre_completo)
     usuario.direccion = data.get('direccion', usuario.direccion)
     usuario.codigo_postal = data.get('codigo_postal', usuario.codigo_postal)
     usuario.ciudad = data.get('ciudad', usuario.ciudad)
     usuario.telefono = data.get('telefono', usuario.telefono)
     
     db.session.commit()
-    return jsonify({"mensaje": "Usuario actualizado con exito"}), 200
+    return jsonify({"mensaje": "Usuario actualizado con exito", "usuario": usuario.serialize()}), 200
 
 # GET Usuario
 @api.route('/usuario', methods=['GET'])
@@ -385,3 +382,21 @@ def checkout():
         print(f"Un error a ocurrido en el chackout: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+# producto por peso
+@api.route("/productoPorPeso/<int:peso>", methods=["GET"])
+def obtenerProductoPorPeso(peso):
+    productos = Producto.query.filter_by(peso=peso).all()
+    productos_serializados = [producto.serialize() for producto in productos]
+    return jsonify(productos_serializados)
+
+# productos filtrados por país y sus variaciones de peso
+@api.route("/productoPorPais/<string:country>", methods=["GET"])
+def obtenerProductosPorPais(country):
+
+    productos = Producto.query.filter_by(region=country).all()
+    
+    if not productos:
+        return jsonify({"error": f"No se encontraron productos para {country}"}), 404
+    productos_serializados = [producto.serialize() for producto in productos]
+
+    return jsonify(productos_serializados), 200

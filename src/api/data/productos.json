@@ -1,17 +1,5 @@
 [
   {
-    "producto_id": 1,
-    "nombre": "Café Colombiano Premium",
-    "descripcion": "Café 100% arábica de la región montañosa de Colombia.",
-    "precio": 5.99,
-    "region": "Colombia",
-    "peso": { "peso": [250, 500, 750, 1000] },
-    "nivel_tostado": 3,
-    "perfil_sabor": { "notas": ["chocolate", "nuez", "frutal"] },
-    "opcion_molido": { "tipos": ["grano", "molido fino", "molido medio"] },
-    "imagen_url": "https://iili.io/H8Y7Opp.webp"
-  },
-  {
     "producto_id": 2,
     "nombre": "Café Colombiano Premium",
     "descripcion": "Café 100% arábica de la región montañosa de Colombia.",
