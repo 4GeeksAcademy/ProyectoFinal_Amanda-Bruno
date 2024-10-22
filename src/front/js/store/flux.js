@@ -1,39 +1,56 @@
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			usuario: [
+    let listeners = [];
 
-			],
-			productos: [
-				
-			  ]
-		},
-		actions: {
-			registrar: (form, navigate) => { 
-				fetch(`${process.env.BACKEND_URL}/api/registro`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(form)
-				})
-				.then(response => {
-					if (!response.ok) {
-						return response.json().then(err => { throw new Error(err.error); });
-					}
-					return response.json();
-				})
-				.then(data => {
-					console.log("Registro exitoso:", data);
-					navigate('/loginView'); 
-				})
-				.catch(error => {
-					console.error('Error en la solicitud:', error);
-					alert('Error al registrar: ' + error.message); 
-				});
-			},
+    const subscribe = (listener) => {
+        listeners.push(listener);
+    };
 
-			loginUsuario: (email, password, onSuccess, onError) => {
+    const unsubscribe = (listener) => {
+        listeners = listeners.filter(l => l !== listener);
+    };
+
+    const notify = () => {
+        listeners.forEach(listener => listener());
+    };
+
+    const setStoreWithNotification = (updatedStore) => {
+        setStore(updatedStore);
+        notify();
+    };
+
+    return {
+        store: {
+            usuario: [],
+            productos: [],
+        },
+        actions: {
+            //REGISTRAR USUARIO
+            registrar: (form, navigate) => {
+                fetch(`${process.env.BACKEND_URL}/api/registro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(form)
+                })
+                    .then(async response => {
+                        if (!response.ok) {
+                            const err = await response.json();
+                            throw new Error(err.error);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Registro exitoso:", data);
+                        navigate('/loginView');
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud:', error);
+                        alert('Error al registrar: ' + error.message);
+                    });
+            },
+            //INICIAR SESION USUARIO
+            loginUsuario: (email, password, onSuccess, onError) => {
                 fetch(`${process.env.BACKEND_URL}/api/login`, {
                     method: 'POST',
                     headers: {
@@ -41,28 +58,28 @@ const getState = ({ getStore, getActions, setStore }) => {
                     },
                     body: JSON.stringify({ email, password })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.token) {
-                        console.log(data)
-                        sessionStorage.setItem('token', data.token);
-                        sessionStorage.setItem('user', JSON.stringify(data.user));
-                        console.log("Inicio de sesión exitoso"); 
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.token) {
+                            console.log(data)
+                            sessionStorage.setItem('token', data.token);
+                            sessionStorage.setItem('user', JSON.stringify(data.user));
+                            console.log("Inicio de sesión exitoso");
 
-                        const store = getStore();
+                            const store = getStore();
 
-						setStore({...store, usuario: data.user})
-                        if (onSuccess) onSuccess();
-                    } else {
-                        const errorMessage = data.error || "Error desconocido al iniciar sesión.";
-                        if (onError) onError(errorMessage);
-                    }
-                })
-                .catch(error => {
-                    if (onError) onError('Error de conexión. Inténtalo de nuevo.');
-                });
+                            setStore({ ...store, usuario: data.user })
+                            if (onSuccess) onSuccess();
+                        } else {
+                            const errorMessage = data.error || "Error desconocido al iniciar sesión.";
+                            if (onError) onError(errorMessage);
+                        }
+                    })
+                    .catch(error => {
+                        if (onError) onError('Error de conexión. Inténtalo de nuevo.');
+                    });
             },
-
+            //UPDATE USUARIO
             update_usuario: async () => {
                 const token = sessionStorage.getItem('token');
                 try {
@@ -85,8 +102,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
                 }
-            },                  
-         
+            },
+            //CONFIRMAR CAMBIOS USUARIO
             submitUsuario: async (form) => {
                 const { usuario } = getStore();
                 const error = getActions().validarPassword(form.newPassword, form.confirmNewPassword);
@@ -98,7 +115,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const updatedUserData = {
                     ...form
                 };
-                if(form.newPassword) {
+                if (form.newPassword) {
                     updatedUserData.password = form.newPassword;
                 } else {
                     delete updatedUserData.password;
@@ -106,7 +123,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 console.log("Informacion del usuario actualizada", updatedUserData)
 
                 const token = sessionStorage.getItem('token');
-                if(!token) {
+                if (!token) {
                     alert("No hay un token de autenticación");
                     return;
                 }
@@ -135,6 +152,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     alert('Error al actualizar los datos: ' + error.message);
                 }
             },
+            //GET PRODUCTOS
             get_productos: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/productos`);
@@ -150,10 +168,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error("Error en get_productos:", error);
                 }
             },
+            //GET PRODUCTO POR ID
             get_producto_by_id: async (producto_id) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/productos/${producto_id}`);
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/producto/${producto_id}`);
                     if (response.ok) {
+                        console.log("Producto recibido:", data);
                         const data = await response.json();
                         const store = getStore();
                         setStore({ ...store, producto: data.producto });
@@ -164,27 +184,30 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error("Error en get_producto_by_id:", error);
                 }
             },
+            //GET USUARIO
             getUsuario: async () => {
                 const token = sessionStorage.getItem('token');
                 try {
-                    const response = await fetch (`${process.env.BACKEND_URL}/api/usuario`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/usuario`, {
                         headers: {
                             'Content-type': 'application/json',
                             'Authorization': `Bearer ${token}`
-                        }})
-                    if (!response.ok){
+                        }
+                    })
+                    if (!response.ok) {
                         return (
-                            {"error": "Usuario no autenticado"}
-                        )}
-                    else {
-                       const data = await response.json()
-                       return(data)
+                            { "error": "Usuario no autenticado" }
+                        )
                     }
-                } catch(error) {
+                    else {
+                        const data = await response.json()
+                        return (data)
+                    }
+                } catch (error) {
                     console.log(error)
                 }
             },
-            
+            //GET PRODUCTOS POR PAIS
             getProductosPorPais: async (country) => {
                 try {
                     const response = await fetch(`/api/productoPorPais/${country}`);
@@ -198,9 +221,69 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("Error al conectar con la API:", error);
                 }
-            }
-        }
-    };
+            },
+            //AGREGAR AL CARRITO
+            add_to_cart: async ({ producto_id, ...producto }, cantidad, peso, molienda) => {
+                const store = getStore();
+
+                try {
+                    const headers = {
+                        'Content-Type': 'application/json',
+                    };
+
+                    if (store.token) {
+                        headers.Authorization = `Bearer ${store.token}`;
+                    }
+
+                    console.log("Adding to cart, producto_id:", producto_id);
+
+                    const response = await fetch(`https://crispy-engine-5gv5xpv7qjgqf9rr-3001.app.github.dev/api/carrito/agregar`, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({
+                            producto_id: producto_id,
+                            cantidad: cantidad,
+                        })
+                    });
+
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data.mensaje);
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Error al agregar al carrito:', errorData.error || 'Unknown error');
+                    }
+                } catch (error) {
+                    console.error("Error al agregar al carrito:", error);
+                }
+            },
+            //ACTUALIZAR CANTIDAD DE PRODUCTOS
+            updateItemQuantity: (id, quantity) => {
+                const store = getStore();
+                const updatedProductos = store.productos.map(item => {
+                    if (item.producto_id === id) {
+                        return { ...item, quantity: Math.max(0, quantity) };
+                    }
+                    return item;
+                });
+
+                setStoreWithNotification({ ...store, productos: updatedProductos });
+            },
+
+            subscribe,
+            unsubscribe,
+            notify,
+        },
+    }
 };
+
+
+const state = getState({ getStore: () => state.store, getActions: () => state.actions, setStore: (newStore) => state.store = newStore });
+
+export const store = state.store;
+export const actions = state.actions;
+export const subscribe = state.actions.subscribe;
+export const unsubscribe = state.actions.unsubscribe;
 
 export default getState;

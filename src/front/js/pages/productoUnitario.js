@@ -19,7 +19,12 @@ const ProductoUnitario = () => {
     const total = producto ? producto.precio * cantidad : 0;
 
     const handleAddToCart = () => {
-        console.log(`Producto ${producto.nombre} agregado al carrito`);
+        console.log("Adding to cart:", producto);
+        if (!producto || !producto.producto_id) {
+            console.error("El ID del producto no esta definido o el producto no ha podido cargarse correctamente.");
+            return;
+        }
+        actions.add_to_cart(producto, cantidad, peso, molienda);
     };
 
     return producto ? (
@@ -55,7 +60,7 @@ const ProductoUnitario = () => {
                         <div className="quantity-buttons">
                             <button onClick={() => setCantidad(Math.max(1, cantidad - 1))}>-</button>
                             <input
-                                type="number"
+                                type="text"
                                 value={cantidad}
                                 onChange={(e) => setCantidad(Number(e.target.value))}
                                 min="1"
