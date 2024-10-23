@@ -19,12 +19,12 @@ const ProductoUnitario = () => {
     const total = producto ? producto.precio * cantidad : 0;
 
     const handleAddToCart = () => {
-        console.log("Adding to cart:", producto);
-        if (!producto || !producto.producto_id) {
+        console.log("Añadiendo al carrito:", producto);
+        if (!producto || !producto_id) {
             console.error("El ID del producto no esta definido o el producto no ha podido cargarse correctamente.");
             return;
         }
-        actions.add_to_cart(producto, cantidad, peso, molienda);
+        actions.add_to_cart(producto_id, cantidad);
     };
 
     return producto ? (

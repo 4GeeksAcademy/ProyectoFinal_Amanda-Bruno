@@ -223,7 +223,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
             //AGREGAR AL CARRITO
-            add_to_cart: async ({ producto_id, ...producto }, cantidad, peso, molienda) => {
+            add_to_cart: async (producto_id, cantidad) => {
                 const store = getStore();
 
                 try {
@@ -235,9 +235,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                         headers.Authorization = `Bearer ${store.token}`;
                     }
 
-                    console.log("Adding to cart, producto_id:", producto_id);
+                    console.log("Agregar al carrito, producto_id:", producto_id);
 
-                    const response = await fetch(`https://crispy-engine-5gv5xpv7qjgqf9rr-3001.app.github.dev/api/carrito/agregar`, {
+                    const response = await fetch(`https://ubiquitous-goldfish-x5r6jgqv794w26rgw-3001.app.github.dev/api/carrito/agregar`, {
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
